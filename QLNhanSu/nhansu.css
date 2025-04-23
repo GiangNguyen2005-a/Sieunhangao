@@ -1,0 +1,690 @@
+/* sửa */
+/* === Main Content Area === */
+.main-content {
+    flex: 1;
+    /* Chiếm hết phần còn lại */
+    padding: 30px 40px;
+    /* Giảm padding một chút */
+    background-color: #f5f8fc;
+    overflow-y: auto;
+    /* Cho phép cuộn nếu nội dung dài */
+}
+
+/* --- Header section in Main Content --- */
+.header {
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    font-size: 28px;
+    /* Giảm kích thước h1 */
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: #222;
+}
+
+.header h1 span {
+    color: #1e88e5;
+    /* Màu nhấn */
+}
+
+.header .sub {
+    font-size: 16px;
+    /* Giảm kích thước sub text */
+    color: #666;
+}
+
+/* --- Dashboard Action Boxes --- */
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    /* Giảm khoảng cách boxes */
+    /* justify-content: center; */
+    /* Bỏ căn giữa để tự nhiên hơn */
+}
+
+.action-box {
+    flex: 1 1 240px;
+    /* Cho phép co giãn nhưng có độ rộng cơ bản */
+    min-width: 220px;
+    max-width: 300px;
+    /* Giới hạn độ rộng tối đa */
+    /* height: 160px; */
+    /* Bỏ chiều cao cố định để tự điều chỉnh */
+    border-radius: 12px;
+    /* Bo góc ít hơn */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Căn giữa nội dung */
+    justify-content: center;
+    gap: 10px;
+    /* Giảm khoảng cách nội dung bên trong */
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    padding: 25px 20px;
+    /* Điều chỉnh padding */
+    border: 1px solid transparent;
+    /* Thêm viền trong suốt */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    /* Thêm bóng đổ nhẹ */
+}
+
+.action-box:hover {
+    transform: translateY(-5px);
+    /* Hiệu ứng nhấc lên khi hover */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.08);
+    border-color: rgba(0, 0, 0, 0.1);
+    /* Hiện viền nhẹ khi hover */
+}
+
+.action-box i {
+    font-size: 30px;
+    /* Kích thước icon */
+}
+
+.action-box h3 {
+    font-size: 17px;
+    /* Kích thước tiêu đề box */
+    font-weight: 600;
+    /* Đậm vừa phải */
+    margin-bottom: 5px;
+}
+
+/* Màu sắc cho Action Boxes */
+.lightblue {
+    background-color: #e3f2fd;
+    color: #1565c0;
+}
+
+.lightgreen {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.lightpurple {
+    background-color: #f3e5f5;
+    color: #6a1b9a;
+}
+
+.lightpink {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.lightorange {
+    background-color: #fff3e0;
+    color: #ef6c00;
+}
+
+/* --- General Form Styling --- */
+.form-area {
+    background-color: #fff;
+    padding: 25px 30px;
+    /* Điều chỉnh padding */
+    border-radius: 8px;
+    /* Bo góc ít hơn */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+    margin-bottom: 20px;
+    /* Khoảng cách với các phần tử khác */
+}
+
+/* --- Fieldset for grouping form elements --- */
+fieldset {
+    border: 1px solid #e0e0e0;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+}
+
+legend {
+    padding: 0 10px;
+    font-weight: 600;
+    color: #1e88e5;
+}
+
+legend h4 {
+    font-size: 1em;
+    /* Đảm bảo h4 trong legend không quá to */
+    color: #1e88e5;
+    margin-bottom: 0;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    /* Giảm khoảng cách group */
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    font-size: 14px;
+    /* Kích thước label nhỏ hơn */
+    color: #444;
+}
+
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group input[type="number"],
+.form-group input[type="email"],
+/* Thêm các type khác nếu cần */
+.form-group input[type="password"],
+.form-group select,
+.form-group textarea {
+    padding: 10px 12px;
+    /* Điều chỉnh padding input */
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    width: 100%;
+    /* Đảm bảo input chiếm đủ không gian */
+    transition: border-color 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #1e88e5;
+    /* Đổi màu viền khi focus */
+    outline: none;
+    /* Bỏ viền mặc định của trình duyệt */
+    box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.2);
+    /* Thêm hiệu ứng bóng mờ khi focus */
+}
+
+.form-group textarea {
+    min-height: 80px;
+    resize: vertical;
+    /* Cho phép thay đổi chiều cao textarea */
+}
+
+/* --- Form Row for horizontal layout --- */
+.form-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    /* Cho phép xuống dòng trên màn hình nhỏ */
+}
+
+.form-row .form-group {
+    flex: 1;
+    /* Các group trong row chia sẻ không gian */
+    min-width: 180px;
+    /* Độ rộng tối thiểu trước khi xuống dòng */
+}
+
+/* --- Submit Button Styling --- */
+.submit-btn {
+    background-color: #1e88e5;
+    /* Màu nền nút chính */
+    color: #fff;
+    padding: 10px 20px;
+    /* Giảm padding nút */
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 15px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.1s ease;
+    display: inline-flex;
+    /* Cho phép icon và text căn chỉnh */
+    align-items: center;
+    gap: 8px;
+}
+
+.submit-btn:hover {
+    background-color: #1565c0;
+    /* Màu nền đậm hơn khi hover */
+}
+
+.submit-btn:active {
+    transform: scale(0.98);
+    /* Hiệu ứng nhấn nút */
+}
+
+.submit-btn i {
+    font-size: 1.1em;
+    /* Icon trong nút lớn hơn một chút */
+}
+
+/* === BỔ SUNG CHO QUẢN LÝ NHÂN SỰ === */
+
+/* --- Bảng biểu --- */
+.table-responsive-wrapper {
+    /* Bọc bảng để cuộn */
+    overflow-x: auto;
+    margin-bottom: 20px;
+    /* Khoảng cách dưới bảng */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    /* box-shadow: 0 1px 3px rgba(0,0,0,0.05); */
+    /* Bỏ shadow ở đây vì đã có ở wrapper */
+    /* border-radius: 8px; */
+    /* Bỏ bo góc ở đây */
+    /* overflow: hidden; */
+    /* Bỏ overflow ở đây */
+    white-space: nowrap;
+    /* Ngăn text trong cell xuống dòng đột ngột */
+}
+
+th,
+td {
+    border: 1px solid #e0e0e0;
+    padding: 10px 14px;
+    /* Điều chỉnh padding cell */
+    text-align: left;
+    font-size: 14px;
+    vertical-align: middle;
+    /* Căn giữa theo chiều dọc */
+}
+
+th {
+    background-color: #f5f8fc;
+    font-weight: 600;
+    color: #333;
+    text-transform: uppercase;
+    font-size: 12px;
+    /* Giảm kích thước chữ tiêu đề cột */
+    position: sticky;
+    /* Giữ tiêu đề khi cuộn dọc (nếu table dài) */
+    top: 0;
+    z-index: 1;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #fdfdfd;
+    /* Màu xen kẽ rất nhẹ */
+}
+
+tbody tr:hover {
+    background-color: #eef5fd;
+    /* Màu xanh rất nhạt khi hover */
+}
+
+/* --- Nút hành động trong bảng --- */
+td .action-buttons {
+    display: flex;
+    gap: 6px;
+    /* Giảm khoảng cách nút */
+    align-items: center;
+}
+
+.table-action-btn {
+    padding: 5px 8px;
+    /* Giảm padding nút trong bảng */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: opacity 0.2s ease, transform 0.1s ease;
+    color: #fff;
+    display: inline-flex;
+    /* Cho icon và text thẳng hàng */
+    align-items: center;
+    gap: 4px;
+    /* Khoảng cách icon và text trong nút */
+}
+
+.table-action-btn i {
+    font-size: 0.95em;
+    /* Icon nhỏ hơn một chút */
+}
+
+.table-action-btn:hover {
+    opacity: 0.85;
+}
+
+.table-action-btn:active {
+    transform: scale(0.96);
+}
+
+/* Màu cho các nút cụ thể trong bảng */
+.btn-view-edit {
+    background-color: #ffb74d;
+    /* Orange */
+}
+
+.btn-delete {
+    background-color: #ef5350;
+    /* Red */
+}
+
+.btn-add {
+    background-color: #66bb6a;
+    /* Green */
+}
+
+.btn-other {
+    background-color: #42a5f5;
+    /* Blue */
+}
+
+/* --- Nút bấm chính (ngoài bảng) --- */
+.main-action-btn {
+    background-color: #1e88e5;
+    color: #fff;
+    padding: 9px 18px;
+    /* Điều chỉnh padding */
+    border: none;
+    border-radius: 6px;
+    /* Bo góc ít hơn */
+    font-weight: 600;
+    font-size: 14px;
+    /* Giảm font size */
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.1s ease;
+    margin-right: 10px;
+    margin-bottom: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.main-action-btn:hover {
+    background-color: #1565c0;
+}
+
+.main-action-btn:active {
+    transform: scale(0.98);
+}
+
+.main-action-btn.delete {
+    /* Nút có tính chất xóa/nguy hiểm */
+    background-color: #d9534f;
+}
+
+.main-action-btn.delete:hover {
+    background-color: #c9302c;
+}
+
+.main-action-btn i {
+    /* Icon đã được căn chỉnh bởi flex */
+}
+
+/* --- Form ẩn --- */
+.hidden-form {
+    display: none;
+    /* Mặc định ẩn */
+    margin-top: 25px;
+    padding: 25px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.hidden-form h3 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    /* Tăng khoảng cách dưới tiêu đề form */
+    font-size: 1.2em;
+    /* Điều chỉnh kích thước */
+    color: #1e88e5;
+    border-bottom: 1px solid #eee;
+    /* Thêm đường kẻ dưới */
+    padding-bottom: 10px;
+}
+
+/* --- Nút Hủy trong form --- */
+.cancel-btn {
+    background-color: #757575;
+    /* Màu xám */
+    margin-left: 10px;
+    /* Khoảng cách với nút submit */
+}
+
+.cancel-btn:hover {
+    background-color: #555;
+}
+
+/* --- Khu vực Báo cáo --- */
+#report-filters {
+    display: flex;
+    flex-wrap: wrap;
+    /* Cho phép xuống dòng */
+    gap: 15px;
+    align-items: flex-end;
+    /* Căn các item xuống dưới */
+    padding: 15px 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#report-filters .form-group {
+    margin-bottom: 0;
+    /* Bỏ margin dưới của form-group trong filter */
+    flex: 1 1 150px;
+    /* Cho phép co giãn nhưng có độ rộng cơ bản */
+}
+
+#report-filters .form-group label {
+    font-size: 13px;
+    /* Label nhỏ hơn */
+    margin-bottom: 4px;
+}
+
+#report-filters input,
+#report-filters select {
+    padding: 8px 10px;
+    /* Input nhỏ hơn */
+}
+
+#report-filters button.submit-btn {
+    margin-top: 0;
+    /* Bỏ margin top của nút */
+    padding: 8px 15px;
+    /* Nút nhỏ hơn */
+    flex-shrink: 0;
+    /* Không co nút lại */
+}
+
+#report-area {
+    margin-top: 20px;
+    padding: 20px 25px;
+    border: 1px dashed #ccc;
+    background-color: #fff;
+    /* Nền trắng cho kết quả */
+    border-radius: 8px;
+    min-height: 150px;
+    /* Chiều cao tối thiểu */
+}
+
+#report-area h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    font-size: 1.2em;
+}
+
+#report-results-container h4 {
+    /* Tiêu đề trong kết quả báo cáo */
+    font-size: 1.1em;
+    color: #1e88e5;
+    margin-bottom: 10px;
+}
+
+#report-results-container p,
+#report-results-container ul,
+#report-results-container li {
+    font-size: 15px;
+    color: #444;
+    margin-bottom: 8px;
+}
+
+#report-results-container ul {
+    padding-left: 25px;
+    list-style: disc;
+}
+
+#report-results-container strong {
+    font-weight: 600;
+}
+
+/* Responsive adjustments (Ví dụ cơ bản) */
+@media (max-width: 992px) {
+    .sidebar {
+        width: 220px;
+        /* Giảm chiều rộng sidebar */
+        padding: 20px 15px;
+    }
+
+    .main-content {
+        padding: 25px 30px;
+    }
+
+    .header h1 {
+        font-size: 24px;
+    }
+
+    .header .sub {
+        font-size: 15px;
+    }
+
+    .action-box {
+        flex-basis: 200px;
+        min-width: 180px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        /* Chuyển thành layout dọc */
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        /* Chiều cao tự động */
+        flex-direction: row;
+        /* Sắp xếp nội dung sidebar ngang */
+        justify-content: space-between;
+        padding: 10px 15px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile {
+        display: none;
+        /* Ẩn profile trên màn hình nhỏ */
+    }
+
+    .nav-links {
+        flex-direction: row;
+        /* Link xếp ngang */
+        gap: 5px;
+        overflow-x: auto;
+        /* Cho phép cuộn ngang link nếu không đủ chỗ */
+        padding-bottom: 5px;
+        /* Thêm padding dưới để thanh cuộn không che chữ */
+    }
+
+    .nav-links a {
+        padding: 8px 10px;
+        font-size: 14px;
+    }
+
+    .nav-links a i {
+        display: none;
+        /* Ẩn icon trên màn hình nhỏ */
+    }
+
+    .nav-links a.active {
+        box-shadow: inset 0 -3px 0 #fff;
+        /* Đổi hiệu ứng active */
+    }
+
+    .main-content {
+        padding: 20px;
+    }
+
+    .actions {
+        gap: 15px;
+    }
+
+    .form-row {
+        flex-direction: column;
+        /* Các trường trong row xếp dọc */
+        gap: 0;
+        /* Bỏ gap dọc */
+    }
+
+    #report-filters {
+        flex-direction: column;
+        /* Bộ lọc xếp dọc */
+        align-items: stretch;
+        /* Kéo dài các item */
+    }
+
+    #report-filters button.submit-btn {
+        margin-top: 10px;
+    }
+}
+
+/* thêm nút trở về trang chủ */
+.sidebar-footer {
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    width: 100%;
+    padding: 0 1rem;
+}
+
+/* thêm */
+
+.top-nav {
+    background: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 0;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.nav-links {
+    width: 100%;
+    padding: 0;
+    display: flex;
+}
+
+.nav-links a {
+    padding: 15px 30px;
+    color: #555;
+    text-decoration: none;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-links a:hover {
+    color: #007bff;
+    background: #f8f9fa;
+    border-bottom-color: #007bff;
+}
+
+.nav-links a.active {
+    color: #007bff;
+    background: #f8f9fa;
+    border-bottom-color: #007bff;
+    font-weight: 500;
+}
+
+.nav-links i {
+    font-size: 16px;
+}

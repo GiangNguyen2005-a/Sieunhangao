@@ -1,0 +1,8 @@
+.
+└── xampp/
+    └── htdocs/
+        └── TKHTTT_N1/
+            ├── QLBHXH
+            ├── QLChamCong
+            ├── ...
+            └── Chung/ file giao diện chung: avatar, trang chủ, thanh chức năng, .../
