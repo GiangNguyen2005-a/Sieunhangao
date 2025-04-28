@@ -1,4 +1,13 @@
 <!DOCTYPE html>
+<?php
+// Kết nối CSDL
+include '../Chung/config.php';
+
+// Kiểm tra kết nối
+if (!$conn) {
+    die("Kết nối thất bại: " . mysqli_connect_error());
+}
+?>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
@@ -8,25 +17,23 @@
     <?php include '../Chung/relink.php'; ?>
 </head>
 <body>
-    <!-- Main Content -->
     <div class="d-flex">
-        <!-- Sidebarchung -->
         <?php include '../Chung/sidebar.php'; ?>
-        <!-- Main Content -->
         <div class="main-content p-4">
             <h2 class="mb-4">Quản lý Bảo hiểm Xã hội</h2>
             
             <div class="top-nav">
                 <div class="nav-section">
                     <nav class="main-nav">
-                        <a class="nav-link active" data-bs-toggle="tab" href="#query">Tra cứu BHXH</a>
-                        <a class="nav-link" data-bs-toggle="tab" href="#update">Cập nhật thông tin</a>
-                        <a class="nav-link" data-bs-toggle="tab" href="#register">Khai báo tăng lao động</a>
+                        <a class="nav-link active" data-target="query">Tra cứu BHXH</a>
+                        <a class="nav-link" data-target="update">Cập nhật</a>
+                        <a class="nav-link" data-target="register">Khai báo bảo hiểm</a>
                     </nav>
                 </div>
             </div>
 
             <div class="tab-content">
+                <!-- Tab Tra cứu BHXH -->
                 <div class="tab-pane fade show active" id="query">
                     <div class="card">
                         <div class="card-body">
@@ -42,58 +49,607 @@
                     </div>
                 </div>
 
+                <!-- Tab Cập nhật -->
                 <div class="tab-pane fade" id="update">
                     <div class="card">
                         <div class="card-body">
-                            <form id="updateForm">
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Mã số BHXH</label>
-                                        <input type="text" class="form-control" placeholder="Nhập mã số BHXH" required>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Mức lương đóng BHXH</label>
-                                        <input type="number" class="form-control" placeholder="Nhập mức lương" required>
-                                    </div>
+                            <div class="sub-nav">
+                                <button class="sub-nav-item active" data-subtab="nhansu">
+                                    <i class="fas fa-users"></i> Nhân sự
+                                </button>
+                            </div>
+                    
+                            <!-- Nhân sự -->
+                            <div class="sub-tab-content active-sub-tab" id="nhansu">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="mb-0">Danh sách nhân viên</h5>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
+                                        <i class="fas fa-plus"></i> Thêm mới lao động
+                                    </button>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Cập nhật</button>
-                            </form>
+                                
+                                <!-- Thay thế bảng danh sách nhân viên với code truy vấn SQL -->
+                                <div class="table-responsive mt-3">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Mã nhân viên</th>
+                                                <th>Họ tên</th>
+                                                <th>Mã số BHXH</th>
+                                                <th>Giới tính</th>
+                                                <th>Chức vụ</th>
+                                                <th>Phòng ban</th>
+                                                <th>Trạng thái</th>
+                                                <th>Thao tác</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            // Truy vấn SQL để lấy thông tin nhân viên kết hợp với thông tin BHXH và các bảng liên quan
+                                            $sql = "SELECT nv.manv, nv.tennv, nv.gioitinh, tt.mabh, vt.tenvt, pb.tenpb, ql.trangthai
+                                                    FROM nhanvien nv
+                                                    INNER JOIN ttbh tt ON nv.manv = tt.manv
+                                                    INNER JOIN qlbh ql ON ql.manv = nv.manv
+                                                    inner join vitri vt on vt.mavt = nv.mavt
+                                                    inner join phongban pb on pb.mapb = nv.mapb";
+                                            $result = mysqli_query($conn, $sql);
+
+                                            $sql2 = "SELECT nv.manv, nv.tennv
+                                                    FROM nhanvien nv";
+                                            $result2 = mysqli_query($conn, $sql2);
+                                            
+                                            if (mysqli_num_rows($result) > 0) {
+                                                // Hiển thị dữ liệu mỗi hàng
+                                                while($row1 = mysqli_fetch_assoc($result)) {
+                                                    // Xác định trạng thái (có thể thay đổi logic này tùy theo yêu cầu)
+                                                    
+                                                    echo "<tr>";
+                                                    echo "<td>" . $row1["manv"] . "</td>";
+                                                    echo "<td>" . $row1["tennv"] . "</td>";
+                                                    echo "<td>" . $row1["mabh"] . "</td>";
+                                                    echo "<td>" . $row1["gioitinh"] . "</td>";
+                                                    echo "<td>" . $row1["tenvt"] . "</td>";
+                                                    echo "<td>" . $row1["tenpb"] . "</td>";
+                                                    echo "<td>" . $row1["trangthai"] . "</td>";
+                                                    echo "<td>
+                                                            <button class='btn btn-sm btn-info me-1'>Xem</button>
+                                                            <button class='btn btn-sm btn-warning me-1'>Sửa</button>
+                                                            <button class='btn btn-sm btn-danger'>Xóa</button>
+                                                        </td>";
+                                                    echo "</tr>";
+                                                }
+                                            } else {
+                                                echo "<tr><td colspan='8' class='text-center'>Không có dữ liệu</td></tr>";
+                                            }
+                                            ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Tab Khai báo tăng lao động -->
                 <div class="tab-pane fade" id="register">
                     <div class="card">
                         <div class="card-body">
-                            <form id="registerForm">
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Họ và tên</label>
-                                        <input type="text" class="form-control" placeholder="Nhập họ và tên" required>
+                            <div class="sub-nav">
+                                <button class="sub-nav-item active" data-subtab="nhapThongTin">
+                                    <i class="fas fa-user-plus"></i> Nhập thông tin
+                                </button>
+                                <button class="sub-nav-item" data-subtab="gui">
+                                    <i class="fas fa-paper-plane"></i> Hồ sơ lưu trữ
+                                </button>
+                                <button class="sub-nav-item" data-subtab="kiemTra">
+                                    <i class="fas fa-tasks"></i> Kiểm tra tiến độ
+                                </button>
+                            </div>
+                            
+                            <!-- Nhập thông tin -->
+                            <div class="sub-tab-content active-sub-tab" id="nhapThongTin">
+                                <!-- In qlbh.php, find the div with id="nhapThongTin" and replace the form inside it with: -->
+                                <form id="registerForm">
+                                    <div class="card mb-3">
+                                        <div class="card-header bg-light">
+                                            <h6 class="mb-0">Thông tin cá nhân</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Mã nhân viên</label>
+                                                    <input type="text" class="form-control" id="manv" placeholder="Nhập mã nhân viên" required>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Họ và tên</label>
+                                                    <input type="text" class="form-control" id="tennv" placeholder="Nhập họ và tên" required>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">CCCD/CMND</label>
+                                                    <input type="text" class="form-control" id="cccd" placeholder="Nhập số CCCD/CMND" required>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Ngày sinh</label>
+                                                    <input type="date" class="form-control" id="ngaysinh" required>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Giới tính</label>
+                                                    <input type="text" class="form-control" id="gioitinh" placeholder="Nhập địa chỉ">
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Số điện thoại</label>
+                                                    <input type="tel" class="form-control" id="sdt" placeholder="Nhập số điện thoại">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Địa chỉ</label>
+                                                    <input type="text" class="form-control" id="diachi" placeholder="Nhập địa chỉ">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Ngày sinh</label>
-                                        <input type="date" class="form-control" required>
+                                    
+                                    <div class="card mb-3">
+                                        <div class="card-header bg-light">
+                                            <h6 class="mb-0">Thông tin việc làm</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Chức vụ</label>
+                                                    <input type="text" class="form-control" id="chucvu" placeholder="Nhập chức vụ" required>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Phòng ban</label>
+                                                    <input type="text" class="form-control" id="phongban" placeholder="Nhập phòng ban" required>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">CCCD/CMND</label>
-                                        <input type="text" class="form-control" placeholder="Nhập số CCCD/CMND" required>
+                                    
+                                    <div class="card mb-3">
+                                        <div class="card-header bg-light">
+                                            <h6 class="mb-0">Thông tin BHXH</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Đã tham gia BHXH</label>
+                                                    <select class="form-select" id="daCoMaBHXH" required>
+                                                        <option value="">Chọn</option>
+                                                        <option value="Có">Có</option>
+                                                        <option value="Chưa">Chưa</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6 mb-3" id = "kbbhField">
+                                                    <label class="form-label">Mã số BHXH</label>
+                                                    <input type="text" class="form-control" id="mabh" placeholder="Nhập mã số BHXH">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Phương án khai báo</label>
+                                                    <select class="form-select" name="phuongankb" required>
+                                                        <option value="">Chọn phương án</option>
+                                                        <option value="Tăng mới">Tăng mới</option>
+                                                        <option value="Đổi sổ BHXH">Đổi sổ BHXH</option>
+                                                        <option value="Điều chỉnh thông tin">Điều chỉnh thông tin</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Ngày bắt đầu tham gia</label>
+                                                    <input type="date" class="form-control" id="nbd" required>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Ngày kết thúc (nếu có)</label>
+                                                    <input type="date" class="form-control" id="nkt">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Ngày bắt đầu tham gia</label>
-                                        <input type="date" class="form-control" required>
+                                    
+                                    <div class="card mb-3">
+                                        <div class="card-header bg-light">
+                                            <h6 class="mb-0">Mức đóng bảo hiểm</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Tỷ lệ người lao động đóng (%)</label>
+                                                    <input type="number" class="form-control" value="10.5" readonly>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Tỷ lệ doanh nghiệp đóng (%)</label>
+                                                    <input type="number" class="form-control" value="21.5" readonly>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Ghi chú</label>
+                                                    <textarea class="form-control" rows="2" placeholder="Nhập ghi chú (nếu có)"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+                                    
+                                    <button type="submit" class="btn btn-primary">Lưu thông tin</button>
+                                </form>
+                            </div>
+                            
+                            <!-- Gửi lên cơ quan -->
+                            <div class="sub-tab-content" id="gui">
+                                <div class="saved-employees mt-3">
+                                    <h5>Danh sách nhân viên đã lưu</h5>
+                                    <!-- In qlbh.php, find the table in div with id="gui" and replace it with: -->
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Họ và tên</th>
+                                                    <th>CCCD/CMND</th>
+                                                    <th>Ngày sinh</th>
+                                                    <th>Ngày tham gia</th>
+                                                    <th>Phương án khai báo</th>
+                                                    <th>Thao tác</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="savedEmployeesList">
+                                            <?php
+                                            // Truy vấn SQL để lấy thông tin nhân viên kết hợp với thông tin BHXH và các bảng liên quan
+                                            $sql = "SELECT nv.ngaysinh, nv.tennv, nv.manv, nv.cccd, tt.nbd, kb.phuongankb
+                                                    FROM kbbh kb
+                                                    INNER JOIN ttbh tt ON kb.mabh = tt.mabh
+                                                    inner join nhanvien nv on nv.manv = tt.manv
+                                                    WHERE kb.trangthai = 'Đang xử lý'";
+                                            $result = mysqli_query($conn, $sql);
+
+                                            $sql2 = "SELECT nv.manv, nv.tennv
+                                                    FROM nhanvien nv";
+                                            $result2 = mysqli_query($conn, $sql2);
+                                            
+                                            if (mysqli_num_rows($result) > 0) {
+                                                // Hiển thị dữ liệu mỗi hàng
+                                                while($row1 = mysqli_fetch_assoc($result)) {
+                                                    // Xác định trạng thái (có thể thay đổi logic này tùy theo yêu cầu)
+                                                    
+                                                    echo "<tr>";
+                                                    echo "<td>" . $row1["tennv"] . "</td>";
+                                                    echo "<td>" . $row1["cccd"] . "</td>";
+                                                    echo "<td>" . $row1["ngaysinh"] . "</td>";
+                                                    echo "<td>" . $row1["nbd"] . "</td>";
+                                                    echo "<td>" . $row1["phuongankb"] . "</td>";
+                                                    echo "<td>
+                                                            <button class='btn btn-sm btn-info me-1' detail-btn data-bs-toggle='modal' data-bs-target='#employeeDetailModal' data-manv='" . $row1["manv"] . "'>Chi tiết</button>
+                                                            <button class='btn btn-sm btn-primary send-btn' data-manv='" . $row1["manv"] . "'>Gửi</button>
+                                                        </td>";
+                                                    echo "</tr>";
+                                                }
+                                            } else {
+                                                echo "<tr><td colspan='8' class='text-center'>Không có dữ liệu</td></tr>";
+                                            }
+                                            ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <button type="button" class="btn btn-success mt-3">Gửi tất cả</button>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Đăng ký</button>
-                            </form>
+                            </div>
+                            
+                            <!-- Kiểm tra tiến độ -->
+                            <!-- In qlbh.php, find the table in div with id="kiemTra" and replace it with: -->
+                            <div class="sub-tab-content" id="kiemTra">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="mb-0">Theo dõi tiến độ xử lý</h5>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Họ và tên</th>
+                                                <th>CCCD/CMND</th>
+                                                <th>Ngày gửi</th>
+                                                <th>Trạng thái</th>
+                                                <th>Chi tiết</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php
+                                        // Truy vấn SQL để lấy thông tin nhân viên kết hợp với thông tin BHXH và các bảng liên quan
+                                        $sql = "SELECT nv.tennv, nv.cccd, kb.ngaygui, kb.trangthai
+                                                FROM kbbh kb
+                                                INNER JOIN ttbh tt ON kb.mabh = tt.mabh
+                                                inner join nhanvien nv on nv.manv = tt.manv
+                                                WHERE kb.trangthai <> 'Đang xử lý'";
+                                        $result = mysqli_query($conn, $sql);
+
+                                        $sql2 = "SELECT nv.manv, nv.tennv
+                                                FROM nhanvien nv";
+                                        $result2 = mysqli_query($conn, $sql2);
+                                        
+                                        if (mysqli_num_rows($result) > 0) {
+                                            // Hiển thị dữ liệu mỗi hàng
+                                            while($row1 = mysqli_fetch_assoc($result)) {
+                                                // Xác định trạng thái (có thể thay đổi logic này tùy theo yêu cầu)
+                                                
+                                                echo "<tr>";
+                                                echo "<td>" . $row1["tennv"] . "</td>";
+                                                echo "<td>" . $row1["cccd"] . "</td>";
+                                                echo "<td>" . $row1["ngaygui"] . "</td>";
+                                                echo "<td>" . $row1["trangthai"] . "</td>";
+                                                echo "<td>
+                                                    <button class='btn btn-sm btn-info' data-bs-toggle='modal' data-bs-target='#processDetailModal'>Xem</button>
+                                                    <button class='btn btn-sm btn-warning' data-bs-toggle='modal' data-bs-target='#addNoteModal'>Thêm</button>
+                                                    </td>";
+                                                echo "</tr>";
+                                            }
+                                        } else {
+                                            echo "<tr><td colspan='8' class='text-center'>Không có dữ liệu</td></tr>";
+                                        }
+                                        ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <!-- Add this code at the end of the body, before the script tag in qlbh.php -->
+    <!-- Modal Chi tiết nhân viên -->
+    <div class="modal fade" id="employeeDetailModal" tabindex="-1" aria-labelledby="employeeDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="employeeDetailModalLabel">Chi tiết thông tin nhân viên</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Thông tin cá nhân</h6>
+                            <p><strong>Mã nhân viên:</strong> NV001</p>
+                            <p><strong>Họ và tên:</strong> Nguyễn Văn A</p>
+                            <p><strong>CCCD/CMND:</strong> 001200123456</p>
+                            <p><strong>Ngày sinh:</strong> 01/01/1990</p>
+                            <p><strong>Giới tính:</strong> Nam</p>
+                            <p><strong>Số điện thoại:</strong> 0901234567</p>
+                            <p><strong>Địa chỉ:</strong> 123 Đường ABC, Quận XYZ, TP.HCM</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Thông tin việc làm</h6>
+                            <p><strong>Chức vụ:</strong> Nhân viên</p>
+                            <p><strong>Phòng ban:</strong> Kế toán</p>
+                            
+                            <h6 class="mt-3">Thông tin BHXH</h6>
+                            <p><strong>Đã tham gia BHXH:</strong> Có</p>
+                            <p><strong>Mã số BHXH:</strong> 0123456789</p>
+                            <p><strong>Phương án khai báo:</strong> Tăng mới</p>
+                            <p><strong>Ngày bắt đầu:</strong> 01/04/2023</p>
+                            <p><strong>Ngày kết thúc:</strong> 01/04/2023</p>
+                            
+                            <h6 class="mt-3">Mức đóng bảo hiểm</h6>
+                            <p><strong>Tỷ lệ NLĐ đóng:</strong> 10.5%</p>
+                            <p><strong>Tỷ lệ DN đóng:</strong> 21.5%</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary">Chỉnh sửa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add this code at the end of the body, before the script tag in qlbh.php -->
+    <!-- Modal Chi tiết tiến độ xử lý -->
+    <div class="modal fade" id="processDetailModal" tabindex="-1" aria-labelledby="processDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="processDetailModalLabel">Chi tiết tiến độ xử lý</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p><strong>Họ và tên:</strong> Nguyễn Văn A</p>
+                            <p><strong>CCCD/CMND:</strong> 001200123456</p>
+                            <p><strong>Phương án khai báo:</strong> Tăng mới</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Ngày gửi:</strong> 10/04/2023</p>
+                            <p><strong>Trạng thái:</strong> <span class="badge bg-success">Đã duyệt</span></p>
+                            <p><strong>Mã số BHXH được cấp:</strong> 0123456789</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Modal Thêm ghi chú -->
+    <div class="modal fade" id="addNoteModal" tabindex="-1" aria-labelledby="addNoteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addNoteModalLabel">Thêm ghi chú</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addNoteForm">
+                        <div class="mb-3">
+                            <label class="form-label">Nhân viên</label>
+                            <input type="text" class="form-control" value="Nguyễn Văn A" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Trạng thái hiện tại</label>
+                            <input type="text" class="form-control" value="Đã duyệt" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Ghi chú mới</label>
+                            <textarea class="form-control" rows="3" placeholder="Nhập ghi chú mới" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Đính kèm tệp (nếu có)</label>
+                            <input type="file" class="form-control">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary">Lưu ghi chú</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Thêm mới lao động -->
+    <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addEmployeeModalLabel">Thêm mới lao động</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addEmployeeForm">
+                        <!-- Khối thông tin cá nhân -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0">Thông tin cá nhân</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Mã nhân viên</label>
+                                        <input type="text" class="form-control" placeholder="Nhập mã nhân viên" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Họ và tên</label>
+                                        <input type="text" class="form-control" placeholder="Nhập họ và tên" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">CCCD/CMND</label>
+                                        <input type="text" class="form-control" placeholder="Nhập số CCCD/CMND" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Ngày sinh</label>
+                                        <input type="date" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Giới tính</label>
+                                        <select class="form-select" required>
+                                            <option value="">Chọn giới tính</option>
+                                            <option value="nam">Nam</option>
+                                            <option value="nu">Nữ</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Số điện thoại</label>
+                                        <input type="tel" class="form-control" placeholder="Nhập số điện thoại">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Địa chỉ</label>
+                                        <input type="text" class="form-control" placeholder="Nhập địa chỉ">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Khối thông tin việc làm -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0">Thông tin việc làm</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Chức vụ</label>
+                                        <input type="text" class="form-control" placeholder="Nhập chức vụ" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Phòng ban</label>
+                                        <input type="text" class="form-control" placeholder="Nhập phòng ban" required>
+                                    </div>                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Trạng thái</label>
+                                        <select class="form-select" required>
+                                            <option value="">Đang làm việc</option>
+                                            <option value="tangmoi">Nghỉ phép</option>
+                                            <option value="doibhxh">Nghỉ hẳn</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Khối thông tin BHXH -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0">Thông tin BHXH</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Đã tham gia BHXH</label>
+                                        <select class="form-select" id="daThamGiaBHXH" required>
+                                            <option value="">Chọn</option>
+                                            <option value="Có">Có</option>
+                                            <option value="Chưa">Chưa</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3" id="maBHXHField">
+                                        <label class="form-label">Mã số BHXH</label>
+                                        <input type="text" class="form-control" id="mabh1" placeholder="Nhập mã số BHXH">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Ngày bắt đầu tham gia</label>
+                                        <input type="date" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Ngày kết thúc (nếu có)</label>
+                                        <input type="date" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Khối mức đóng bảo hiểm -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0">Mức đóng bảo hiểm</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Tỷ lệ người lao động đóng (%)</label>
+                                        <input type="number" class="form-control" id="tlnld" value="10.5" readonly>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Tỷ lệ doanh nghiệp đóng (%)</label>
+                                        <input type="number" class="form-control" id="tldn" value="21.5" readonly>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Ghi chú</label>
+                                        <textarea class="form-control" rows="2" placeholder="Nhập ghi chú (nếu có)"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" id="saveNewEmployee">Lưu thông tin</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="qlbh.js"></script>
 </body>
 </html>
+<?php
+mysqli_close($conn);
+?>

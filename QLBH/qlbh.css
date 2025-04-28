@@ -1,3 +1,4 @@
+/* Main layout */
 .tab-content {
     padding: 20px 0;
 }
@@ -12,14 +13,15 @@
     padding: 2rem;
 }
 
+/* Form elements */
 .form-label {
     font-weight: 500;
     color: #555;
 }
 
 .btn-primary {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
+    background-color: #2196f3;
+    border-color: #2196f3;
     padding: 0.5rem 1.5rem;
 }
 
@@ -28,6 +30,17 @@
     border-color: #1976D2;
 }
 
+.btn-success {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+.btn-success:hover {
+    background-color: #388E3C;
+    border-color: #388E3C;
+}
+
+/* Query result */
 #queryResult {
     background-color: #f8f9fa;
     padding: 1rem;
@@ -39,30 +52,22 @@
     display: block;
 }
 
-@media (max-width: 768px) {
-    .card-body {
-        padding: 1rem;
-    }
-    
-    .form-label {
-        font-size: 0.9rem;
-    }
-}
+/* Main navigation */
 .top-nav {
     background: #fff;
     border-bottom: 1px solid #e0e0e0;
     padding: 0;
     margin-bottom: 25px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  }
+}
   
-  .main-nav {
+.main-nav {
     width: 100%;
     padding: 0;
     display: flex;
-  }
+}
   
-  .main-nav a {
+.main-nav a {
     padding: 15px 30px;
     color: #555;
     text-decoration: none;
@@ -71,22 +76,338 @@
     display: flex;
     align-items: center;
     gap: 8px;
-  }
+    cursor: pointer;
+}
   
-  .main-nav a:hover {
+.main-nav a:hover {
     color: #007bff;
     background: #f8f9fa;
     border-bottom-color: #007bff;
-  }
+}
   
-  .main-nav a.active {
+.main-nav a.active {
     color: #007bff;
     background: #f8f9fa;
     border-bottom-color: #007bff;
     font-weight: 500;
-  }
+}
   
-  .main-nav i {
+.main-nav i {
     font-size: 16px;
-  }
-  
+}
+
+/* Sub-navigation styles */
+.sub-nav {
+    display: flex;
+    margin-bottom: 20px;
+    background-color: #fff;
+    padding: 5px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.sub-nav-item {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    background: transparent;
+    color: #555;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.sub-nav-item:hover {
+    background: #f8f9fa;
+    color: #007bff;
+}
+
+.sub-nav-item.active {
+    background: #007bff;
+    color: #fff;
+}
+
+/* Sub-tab content styles */
+.sub-tab-content {
+    display: none;
+    animation: fadeIn 0.3s;
+}
+
+.sub-tab-content.active-sub-tab {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Process diagram styles */
+.process-diagram {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.process-steps {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.step {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.step-content {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px 15px;
+    min-width: 200px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.step-arrow {
+    margin: 10px 0;
+    color: #777;
+}
+
+.step-decision {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.diamond {
+    width: 50px;
+    height: 50px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    transform: rotate(45deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.diamond i {
+    transform: rotate(-45deg);
+    color: #555;
+}
+
+.decision-paths {
+    display: flex;
+    width: 300px;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.path-left, .path-right {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.step-branches {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.branch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .form-label {
+        font-size: 0.9rem;
+    }
+    
+    .sub-nav {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .step-branches {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .decision-paths {
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+}
+
+/* OTP section */
+.otp-section {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+/* Table styles */
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+}
+
+.badge {
+    padding: 5px 10px;
+    font-weight: 500;
+}
+/* 287 dòng */
+/* Add these styles to qlbh.css */
+
+/* Card header styling */
+.card-header {
+    padding: 0.75rem 1.25rem;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0,0,0,0.125);
+}
+
+/* Improved table styling */
+.table th {
+    font-weight: 600;
+    background-color: #f5f5f5;
+}
+
+.table-sm td, .table-sm th {
+    padding: 0.5rem;
+}
+
+/* Modal improvements */
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal-title {
+    font-weight: 500;
+}
+
+/* Improved form sections */
+.form-section {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.form-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.form-section-header {
+    margin-bottom: 1rem;
+    font-weight: 500;
+    color: #495057;
+}
+
+/* Badge styling */
+.badge {
+    font-weight: 500;
+    padding: 0.4em 0.6em;
+}
+
+/* Button improvements */
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* Add spacing to button groups */
+.btn + .btn {
+    margin-left: 0.25rem;
+}
+/* Styles for contenteditable cells */
+[contenteditable="true"] {
+    background-color: #f8f9fc;
+    padding: 2px 5px;
+    border: 1px solid #ced4da;
+    border-radius: 3px;
+    transition: background-color 0.2s;
+}
+
+[contenteditable="true"]:hover {
+    background-color: #e9ecef;
+}
+
+[contenteditable="true"]:focus {
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Table row hover styles */
+.table tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+/* Period detail transitions */
+#periodDetail {
+    transition: all 0.3s ease;
+}
+
+/* Modal styling improvements */
+.modal-xl {
+    max-width: 95%;
+}
+
+@media (min-width: 1200px) {
+    .modal-xl {
+        max-width: 1140px;
+    }
+}
+
+/* Improved button styling */
+.btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    color: white;
+}
+
+.btn-info:hover {
+    background-color: #138496;
+    border-color: #117a8b;
+    color: white;
+}
+
+/* Year selector styling */
+#yearSelect {
+    background-color: #f8f9fa;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 5px;
+}

@@ -6,3 +6,266 @@
             ├── QLChamCong
             ├── ...
             └── Chung/ file giao diện chung: avatar, trang chủ, thanh chức năng, .../
+
+DB
+-- Tạo bảng Phòng ban
+CREATE TABLE PhongBan (
+    MaPB VARCHAR(10) PRIMARY KEY,
+    TenPB VARCHAR(100)
+);
+
+-- Tạo bảng Vị trí
+CREATE TABLE ViTri (
+    MaVT VARCHAR(10) PRIMARY KEY,
+    TenVT VARCHAR(100) UNIQUE NOT NULL
+);
+
+-- Tạo bảng Nhân viên
+CREATE TABLE NhanVien (
+    MaNV VARCHAR(10) PRIMARY KEY,
+    TenNV VARCHAR(100) NOT NULL,
+    NgaySinh DATE,
+    NgayVaoLam DATE,
+    ChungChi VARCHAR(30),
+    GioiTinh VARCHAR(5),
+    CCCD VARCHAR(20) UNIQUE,
+    SDT VARCHAR(15),
+    DiaChi VARCHAR(255),
+    MaPB VARCHAR(10),
+    MaVT VARCHAR(10),
+    FOREIGN KEY (MaPB) REFERENCES PhongBan(MaPB),
+    FOREIGN KEY (MaVT) REFERENCES ViTri(MaVT)
+);
+
+-- Tạo bảng CHAMCONG (Attendance)
+CREATE TABLE ChamCong (
+    MaCC VARCHAR(10) PRIMARY KEY,
+    MaNV VARCHAR(10) NOT NULL,
+    Ngay DATE NOT NULL,
+    GioDen TIME,
+    GioVe TIME,
+    TrangThai NVARCHAR(50) CHECK (TrangThai IN (N'Đi làm', N'Vắng mặt', N'Đi muộn', N'Về sớm', N'Nghỉ phép')),
+    FOREIGN KEY (MaNV) REFERENCES NhanVien(MaNV)
+);
+
+-- Tạo bảng PHANHOICHAMCONG (Attendance Feedback)
+CREATE TABLE PhanHoiChamCong (
+    MaPHCC VARCHAR(10) PRIMARY KEY,
+    MaCC VARCHAR(10) NOT NULL,
+    NoiDung NVARCHAR(500),
+    BangChung NVARCHAR(255), -- Có thể là đường dẫn đến tệp đính kèm
+    FOREIGN KEY (MaCC) REFERENCES ChamCong(MaCC)
+);
+
+-- Tạo bảng DONXINNGHIPHEP (Leave Request)
+CREATE TABLE DonXinNghiPhep (
+    MaDXNP VARCHAR(10) PRIMARY KEY,
+    MaNV VARCHAR(10) NOT NULL,
+    LyDo NVARCHAR(500) NOT NULL,
+    TGBatDau DATETIME NOT NULL,
+    TGKetThuc DATETIME NOT NULL,
+    TinhTrang NVARCHAR(50) DEFAULT N'Chờ duyệt' CHECK (TinhTrang IN (N'Chờ duyệt', N'Đã duyệt', N'Từ chối')),
+    FOREIGN KEY (MaNV) REFERENCES NhanVien(MaNV)
+);
+
+-- Tạo bảng P_XETDUYETNP (Leave Approval)
+CREATE TABLE P_XetDuyetNP (
+    MaPXDNP VARCHAR(10) PRIMARY KEY,
+    MaDXNP VARCHAR(10) NOT NULL,
+    TinhTrang NVARCHAR(50) CHECK (TinhTrang IN (N'Chờ duyệt', N'Đã duyệt', N'Từ chối')),
+    TGXetDuyet DATETIME NOT NULL,
+    FOREIGN KEY (MaDXNP) REFERENCES DonXinNghiPhep(MaDXNP)
+);
+
+-- Tạo bảng Kỳ Đánh Giá
+CREATE TABLE KyDanhGia (
+    MaKyDG VARCHAR(10) PRIMARY KEY,
+    TenKyDG NVARCHAR(200) NOT NULL,
+    ViTriDG NVARCHAR(10) NOT NULL,
+    ThoiGianApDung DATE NOT NULL, -- Ngày bắt đầu áp dụng (VD: 01/01/2024 cho Quý 1 2024)
+    HanTuDanhGia DATE NULL, -- Hạn nhân viên tự đánh giá
+    HanQuanLyDanhGia DATE NOT NULL, -- Hạn quản lý đánh giá (Deadline chung)
+    PhuongPhapDanhGia NVARCHAR(100) NULL, -- Có thể tách bảng nếu cần
+    MaNV_NguoiTao VARCHAR(10) NULL, -- Nhân viên HR tạo kỳ
+    NgayTao DATETIME DEFAULT CURDATE(),
+    TrangThai NVARCHAR(50) DEFAULT N'Mới tạo', -- Ví dụ: Mới tạo, Đang diễn ra, Đã đóng
+    FOREIGN KEY (MaNV_NguoiTao) REFERENCES NhanVien(MaNV)
+);
+
+-- Tạo bảng Đối Tượng Tham Gia Kỳ Đánh Giá
+CREATE TABLE DoiTuongKyDanhGia (
+    MaKyDG VARCHAR(10) NOT NULL,
+    MaNV VARCHAR(10) NOT NULL,
+    TrangThaiTuDanhGia NVARCHAR(50) DEFAULT N'Chưa thực hiện', -- Chưa thực hiện, Đã thực hiện
+    TrangThaiQLDanhGia NVARCHAR(50) DEFAULT N'Chờ đánh giá', -- Chờ đánh giá, Đã đánh giá, Đã phản hồi, Đã xác nhận
+    PRIMARY KEY (MaKyDG, MaNV),
+    FOREIGN KEY (MaKyDG) REFERENCES KyDanhGia(MaKyDG) ON DELETE CASCADE,
+    FOREIGN KEY (MaNV) REFERENCES NhanVien(MaNV) ON DELETE CASCADE
+);
+
+-- Tạo bảng Phiếu Tự Đánh Giá
+CREATE TABLE PhieuTuDanhGia (
+    MaPTDG VARCHAR(10) PRIMARY KEY,
+    MaKyDG VARCHAR(10) NOT NULL,
+    AMSP INT CHECK (AMSP BETWEEN 1 AND 10),
+    AHNV INT CHECK (AHNV BETWEEN 1 AND 10),
+    QuanLy INT CHECK (QUANLY BETWEEN 1 AND 10),
+    PhanTich INT CHECK (PHANTICH BETWEEN 1 AND 10),
+    QLDUAN INT CHECK (QLDUAN BETWEEN 1 AND 10),
+    GiaiQuyetVanDe INT CHECK (GIAIQUYETVANDE BETWEEN 1 AND 10),
+    TinhThanTN INT CHECK (TINHTHANTN BETWEEN 1 AND 10),
+    ThaiDo INT CHECK (THAIDO BETWEEN 1 AND 10),
+    MaNV VARCHAR(10) NOT NULL,
+    NhanXet NVARCHAR(500) NULL,
+    NgayThucHien DATETIME DEFAULT CURDATE(),
+    FOREIGN KEY (MaKyDG, MaNV) REFERENCES DoiTuongKyDanhGia(MaKyDG, MaNV),
+    CONSTRAINT UK_PTDG_NV_KY UNIQUE (MaNV, MaKyDG) -- Đảm bảo mỗi nhân viên chỉ có 1 phiếu tự đánh giá cho mỗi kỳ
+);
+
+-- Tạo bảng Phiếu Quản Lý Đánh Giá
+CREATE TABLE PhieuQuanLyDanhGia (
+    MaQLDG VARCHAR(10) PRIMARY KEY,
+    AMSP INT CHECK (AMSP BETWEEN 1 AND 10),
+    AHNV INT CHECK (AHNV BETWEEN 1 AND 10),
+    QuanLy INT CHECK (QUANLY BETWEEN 1 AND 10),
+    PhanTich INT CHECK (PHANTICH BETWEEN 1 AND 10),
+    QLDUAN INT CHECK (QLDUAN BETWEEN 1 AND 10),
+    GiaiQuyetVanDe INT CHECK (GIAIQUYETVANDE BETWEEN 1 AND 10),
+    TinhThanTN INT CHECK (TINHTHANTN BETWEEN 1 AND 10),
+    ThaiDo INT CHECK (THAIDO BETWEEN 1 AND 10),
+    NhanXet NVARCHAR(500),
+    TongDiem INT GENERATED ALWAYS AS (AMSP + AHNV + QUANLY + PHANTICH + QLDUAN + GIAIQUYETVANDE + TINHTHANTN + THAIDO) STORED,
+    TinhTrang NVARCHAR(30) DEFAULT N'Chờ đánh giá',
+    MaNV VARCHAR(10) NOT NULL, -- Nhân viên được đánh giá
+    MaPTDG VARCHAR(10) NOT NULL,
+    MaNV_QuanLy VARCHAR(10) NOT NULL, -- Quản lý đánh giá
+    FOREIGN KEY (MaNV) REFERENCES NhanVien(MaNV),
+    FOREIGN KEY (MaPTDG) REFERENCES PhieuTuDanhGia(MaPTDG),
+    FOREIGN KEY (MaNV_QuanLy) REFERENCES NhanVien(MaNV)
+);
+
+-- Tạo bảng Chi Tiết Phản Hồi
+CREATE TABLE ChiTietPhanHoiDanhGia (
+    MaPhanHoi VARCHAR(10) PRIMARY KEY,
+    MaQLDG VARCHAR(10) NOT NULL, -- Liên kết với phiếu quản lý đánh giá
+    MaNV_NguoiGui VARCHAR(10) NOT NULL, -- Người gửi phản hồi (NV hoặc QL)
+    NoiDung LONGTEXT NOT NULL,
+    ThoiGianGui DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (MaQLDG) REFERENCES PhieuQuanLyDanhGia(MaQLDG) ON DELETE CASCADE,
+    FOREIGN KEY (MaNV_NguoiGui) REFERENCES NhanVien(MaNV)
+);
+
+-- Tạo bảng Báo Cáo Đánh Giá
+CREATE TABLE BaoCaoDanhGia (
+    MaBC VARCHAR(10) PRIMARY KEY,
+    TenBC NVARCHAR(100) NOT NULL,
+    NgayLapBC DATE NOT NULL,
+    MaKyDG VARCHAR(10) NULL, -- Có thể báo cáo theo kỳ hoặc không
+    MaNV_NguoiLap VARCHAR(10) NOT NULL,
+    LoaiBaoCao NVARCHAR(50) NULL, -- VD: Tong hop theo ky, Theo phong ban,...
+    NoiDungLuuTru LONGTEXT NULL, -- Có thể lưu tham số báo cáo hoặc link file,...
+    FOREIGN KEY (MaKyDG) REFERENCES KyDanhGia(MaKyDG),
+    FOREIGN KEY (MaNV_NguoiLap) REFERENCES NhanVien(MaNV)
+);
+
+-- Tạo bảng Hợp Đồng
+CREATE TABLE HopDong (
+    MaHD VARCHAR(10) PRIMARY KEY,
+    MaNV VARCHAR(10),
+    SoHD VARCHAR(20) NOT NULL,
+    LoaiHD VARCHAR(50) NOT NULL,
+    NgayKy DATE,
+    NgayHieuLuc DATE,
+    NgayHetHan DATE,
+    FOREIGN KEY (MaNV) REFERENCES NhanVien(MaNV)
+);
+
+-- Tạo bảng Quyết Định
+CREATE TABLE QuyetDinh (
+    MaQD VARCHAR(10) PRIMARY KEY,
+    SoQD VARCHAR(20) NOT NULL,
+    LoaiQD VARCHAR(50) NOT NULL,
+    MaNV VARCHAR(10),
+    NgayHieuLuc DATE,
+    NoiDung TEXT,
+    FOREIGN KEY (MaNV) REFERENCES NhanVien(MaNV)
+);
+
+-- Tạo bảng Nghỉ Việc
+CREATE TABLE NghiViec (
+    MaNVNghi VARCHAR(10) PRIMARY KEY,
+    MaNV VARCHAR(10),
+    NgayNopDon DATE,
+    NgayNghi DATE,
+    LyDoNghi TEXT,
+    TrangThai VARCHAR(50),
+    FOREIGN KEY (MaNV) REFERENCES NhanVien(MaNV)
+);
+
+-- Tạo bảng Khen Thưởng
+CREATE TABLE KhenThuong (
+    MaKT VARCHAR(10) PRIMARY KEY,
+    MaNV VARCHAR(10),
+    SoQD VARCHAR(20) NOT NULL,
+    NgayQD DATE,
+    HinhThucKT VARCHAR(100),
+    LyDoKT TEXT,
+    MucThuong INT,
+    FOREIGN KEY (MaNV) REFERENCES NhanVien(MaNV)
+);
+
+-- Tạo bảng Kỷ Luật
+CREATE TABLE KyLuat (
+    MaKL VARCHAR(10) PRIMARY KEY,
+    MaNV VARCHAR(10),
+    SoBBQD VARCHAR(20) NOT NULL,
+    NgayViPham DATE,
+    HinhThucKL VARCHAR(50),
+    LyDoKL TEXT,
+    FOREIGN KEY (MaNV) REFERENCES NhanVien(MaNV)
+);
+
+-- Tạo bảng Thông tin thuế
+CREATE TABLE ThongTinThue (
+    MaThue VARCHAR(15) PRIMARY KEY,
+    MaNV VARCHAR(10),
+    MST VARCHAR(15) UNIQUE,
+    ThuNhapChinh DECIMAL(18,2),
+    Thuong DECIMAL(18,2),
+    PhuCap DECIMAL(18,2),
+    GiamTru DECIMAL(18,2),
+    BaoHiem DECIMAL(18,2),
+    NhomNhanVien VARCHAR(20),
+    FOREIGN KEY (MaNV) REFERENCES NhanVien(MaNV),
+    CONSTRAINT chk_NhomNhanVien CHECK (
+        NhomNhanVien IN ('co_hop_dong', 'khong_hop_dong', 'khong_cu_tru')
+    )
+);
+
+-- Tạo bảng Tờ khai thuế
+CREATE TABLE ToKhaiThue (
+    MaTK VARCHAR(20) PRIMARY KEY,
+    MaNV VARCHAR(10),
+    KyKeKhai VARCHAR(7),
+    TongThuNhap DECIMAL(18,2),
+    TongThuePhaiNop DECIMAL(18,2),
+    FOREIGN KEY (MaNV) REFERENCES NhanVien(MaNV),
+    CONSTRAINT chk_KyKeKhai_Format CHECK (
+        KyKeKhai LIKE '[1-2][0-9][0-9][0-9]-[0-1][0-9]'
+        AND SUBSTRING(KyKeKhai, 6, 2) BETWEEN '01' AND '12'
+    )
+);
+
+-- Tạo bảng Xác nhận thuế
+CREATE TABLE XacNhanThue (
+    MaXN VARCHAR(15) PRIMARY KEY,
+    MaNV VARCHAR(10),
+    KyTinhThue VARCHAR(7),
+    SoTienNop DECIMAL(18,2),
+    NgayNop DATE,
+    FOREIGN KEY (MaNV) REFERENCES NhanVien(MaNV),
+    CONSTRAINT chk_KyTinhThue_Format CHECK (
+        KyTinhThue LIKE '[1-2][0-9][0-9][0-9]-[0-1][0-9]'
+        AND SUBSTRING(KyTinhThue, 6, 2) BETWEEN '01' AND '12'
+    )
+);
