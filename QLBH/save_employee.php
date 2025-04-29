@@ -15,8 +15,8 @@ $daCoMaBHXH = $_POST['daCoMaBHXH'];
 $mabh = $_POST['mabh'];
 $phuongankb = $_POST['phuongankb'];
 // Set default values if not provided
-$tlndl = isset($_POST['tlnld']) ? $_POST['tlnld'] : 0;
-$tldn = isset($_POST['tldn']) ? $_POST['tldn'] : 0;
+$tlndl = $_POST['tlnld'];
+$tldn = $_POST['tldn'];
 $nbd = $_POST['nbd'];
 $nkt = $_POST['nkt'];
 

@@ -254,15 +254,11 @@ if (!$conn) {
                                             <div class="row">
                                                 <div class="col-md-6 mb-3">
                                                     <label class="form-label">Tỷ lệ người lao động đóng (%)</label>
-                                                    <input type="number" class="form-control" value="10.5" readonly>
+                                                    <input type="number" class="form-control" id="tlnld" value="10.5" readonly>
                                                 </div>
                                                 <div class="col-md-6 mb-3">
                                                     <label class="form-label">Tỷ lệ doanh nghiệp đóng (%)</label>
-                                                    <input type="number" class="form-control" value="21.5" readonly>
-                                                </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <label class="form-label">Ghi chú</label>
-                                                    <textarea class="form-control" rows="2" placeholder="Nhập ghi chú (nếu có)"></textarea>
+                                                    <input type="number" class="form-control" id="tldn" value="21.5" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -373,8 +369,7 @@ if (!$conn) {
                                                 echo "<td>" . $row1["ngaygui"] . "</td>";
                                                 echo "<td>" . $row1["trangthai"] . "</td>";
                                                 echo "<td>
-                                                    <button class='btn btn-sm btn-info' data-bs-toggle='modal' data-bs-target='#processDetailModal'>Xem</button>
-                                                    <button class='btn btn-sm btn-warning' data-bs-toggle='modal' data-bs-target='#addNoteModal'>Thêm</button>
+                                                    <button class='btn btn-sm btn-info' detail-btn-2 data-bs-toggle='modal' data-bs-target='#processDetailModal' data-cccd='" . $row1["cccd"] . "'>Xem</button>
                                                     </td>";
                                                 echo "</tr>";
                                             }
@@ -394,46 +389,39 @@ if (!$conn) {
     </div>
     <!-- Add this code at the end of the body, before the script tag in qlbh.php -->
     <!-- Modal Chi tiết nhân viên -->
-    <div class="modal fade" id="employeeDetailModal" tabindex="-1" aria-labelledby="employeeDetailModalLabel" aria-hidden="true">
+    <div class="modal fade" id="employeeDetailModal">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="employeeDetailModalLabel">Chi tiết thông tin nhân viên</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title">Chi tiết thông tin nhân viên</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6">
                             <h6>Thông tin cá nhân</h6>
-                            <p><strong>Mã nhân viên:</strong> NV001</p>
-                            <p><strong>Họ và tên:</strong> Nguyễn Văn A</p>
-                            <p><strong>CCCD/CMND:</strong> 001200123456</p>
-                            <p><strong>Ngày sinh:</strong> 01/01/1990</p>
-                            <p><strong>Giới tính:</strong> Nam</p>
-                            <p><strong>Số điện thoại:</strong> 0901234567</p>
-                            <p><strong>Địa chỉ:</strong> 123 Đường ABC, Quận XYZ, TP.HCM</p>
+                            <p><strong>Mã nhân viên:</strong> <span id="detail_manv"></span></p>
+                            <p><strong>Họ và tên:</strong> <span id="detail_tennv"></span></p>
+                            <p><strong>CCCD/CMND:</strong> <span id="detail_cccd"></span></p>
+                            <p><strong>Ngày sinh:</strong> <span id="detail_ngaysinh"></span></p>
+                            <p><strong>Giới tính:</strong> <span id="detail_gioitinh"></span></p>
+                            <p><strong>Số điện thoại:</strong> <span id="detail_sdt"></span></p>
+                            <p><strong>Địa chỉ:</strong> <span id="detail_diachi"></span></p>
                         </div>
                         <div class="col-md-6">
                             <h6>Thông tin việc làm</h6>
-                            <p><strong>Chức vụ:</strong> Nhân viên</p>
-                            <p><strong>Phòng ban:</strong> Kế toán</p>
+                            <p><strong>Chức vụ:</strong> <span id="detail_tenvt"></span></p>
+                            <p><strong>Phòng ban:</strong> <span id="detail_tenpb"></span></p>
                             
                             <h6 class="mt-3">Thông tin BHXH</h6>
-                            <p><strong>Đã tham gia BHXH:</strong> Có</p>
-                            <p><strong>Mã số BHXH:</strong> 0123456789</p>
-                            <p><strong>Phương án khai báo:</strong> Tăng mới</p>
-                            <p><strong>Ngày bắt đầu:</strong> 01/04/2023</p>
-                            <p><strong>Ngày kết thúc:</strong> 01/04/2023</p>
-                            
-                            <h6 class="mt-3">Mức đóng bảo hiểm</h6>
-                            <p><strong>Tỷ lệ NLĐ đóng:</strong> 10.5%</p>
-                            <p><strong>Tỷ lệ DN đóng:</strong> 21.5%</p>
+                            <p><strong>Mã số BHXH:</strong> <span id="detail_mabh"></span></p>
+                            <p><strong>Phương án khai báo:</strong> <span id="detail_phuongankb"></span></p>
+                            <p><strong>Ngày bắt đầu:</strong> <span id="detail_nbd"></span></p>
+                            <p><strong>Ngày kết thúc:</strong> <span id="detail_nkt"></span></p>
+                            <p><strong>Mức đóng NLĐ:</strong> <span id="detail_mucdongnld"></span></p>
+                            <p><strong>Mức đóng DN:</strong> <span id="detail_mucdongdn"></span></p>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button type="button" class="btn btn-primary">Chỉnh sửa</button>
                 </div>
             </div>
         </div>
@@ -444,66 +432,30 @@ if (!$conn) {
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="processDetailModalLabel">Chi tiết tiến độ xử lý</h5>
+                    <h5 class="modal-title">Chi tiết tiến độ xử lý</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <p><strong>Họ và tên:</strong> Nguyễn Văn A</p>
-                            <p><strong>CCCD/CMND:</strong> 001200123456</p>
-                            <p><strong>Phương án khai báo:</strong> Tăng mới</p>
+                            <p><strong>Họ và tên:</strong> <span id="kq_tennv"></span></p>
+                            <p><strong>CCCD/CMND:</strong> <span id="kq_cccd"></span></p>
+                            <p><strong>Phương án khai báo:</strong> <span id="kq_phuongankb"></span></p>
                         </div>
                         <div class="col-md-6">
-                            <p><strong>Ngày gửi:</strong> 10/04/2023</p>
-                            <p><strong>Trạng thái:</strong> <span class="badge bg-success">Đã duyệt</span></p>
-                            <p><strong>Mã số BHXH được cấp:</strong> 0123456789</p>
+                            <p><strong>Ngày gửi:</strong> <span id="kq_ngaygui"></span></p>
+                            <p><strong>Trạng thái:</strong> <span id="kq_trangthai"></span></p>
+                            <p><strong>Mã số BHXH được cấp:</strong> <span id="kq_mabh"></span></p>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary">Gửi kết quả</button>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Modal Thêm ghi chú -->
-    <div class="modal fade" id="addNoteModal" tabindex="-1" aria-labelledby="addNoteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addNoteModalLabel">Thêm ghi chú</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="addNoteForm">
-                        <div class="mb-3">
-                            <label class="form-label">Nhân viên</label>
-                            <input type="text" class="form-control" value="Nguyễn Văn A" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Trạng thái hiện tại</label>
-                            <input type="text" class="form-control" value="Đã duyệt" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Ghi chú mới</label>
-                            <textarea class="form-control" rows="3" placeholder="Nhập ghi chú mới" required></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Đính kèm tệp (nếu có)</label>
-                            <input type="file" class="form-control">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary">Lưu ghi chú</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Modal Thêm mới lao động -->
     <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">

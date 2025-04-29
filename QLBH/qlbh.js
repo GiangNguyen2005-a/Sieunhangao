@@ -40,7 +40,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Sub tab navigation
     const subNavButtons = document.querySelectorAll('.sub-nav-item');
-    const subTabContents = document.querySelectorAll('.sub-tab-content');
 
     subNavButtons.forEach(button => {
         button.addEventListener('click', function() {
@@ -75,8 +74,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Form submissions
     const queryForm = document.getElementById('queryForm');
-    const updateDongForm = document.getElementById('updateDongForm');
-    const registerForm = document.getElementById('registerForm');
     const queryResult = document.getElementById('queryResult');
 
     // Query Form
@@ -147,13 +144,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 500);
     });
 
-    // Add null checks for forms
-    updateDongForm?.addEventListener('submit', function(e) {
-        e.preventDefault();
-        alert('Đã cập nhật thông tin BHXH thành công!');
-        this.reset();
-    });
-
     function kiemTraMaBHXH(id) {
         return /^\d{10}$/.test(id);
     }
@@ -200,42 +190,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // thêm grok 
-// Xử lý sự kiện nhấn nút "Chi tiết"
-const viewDetailBtns = document.querySelectorAll('.view-detail-btn');
-const dongTable = document.getElementById('dongTable');
-const periodDetail = document.getElementById('periodDetail');
-const periodTitle = document.getElementById('periodTitle');
-
-viewDetailBtns.forEach(btn => {
-    btn.addEventListener('click', function() {
-        const row = this.closest('.dong-row');
-        const period = row.getAttribute('data-period');
-        // Cập nhật tiêu đề kỳ đóng
-        periodTitle.textContent = `Tháng ${period.split('-')[0]}/${period.split('-')[1]}`;
-        // Ẩn bảng tổng hợp và hiển thị bảng chi tiết
-        dongTable.style.display = 'none';
-        periodDetail.style.display = 'block';
-    });
-});
-
-// Xử lý chỉnh sửa trực tiếp
-const editableCells = document.querySelectorAll('[contenteditable="true"]');
-editableCells.forEach(cell => {
-    cell.addEventListener('blur', function() {
-        // Lưu thay đổi (giả lập)
-        const newValue = this.textContent;
-        console.log(`Đã lưu giá trị mới: ${newValue}`);
-        // Thay console.log bằng logic gửi API nếu cần
-    });
-    cell.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            this.blur(); // Kích hoạt sự kiện blur để lưu
-        }
-    });
-});
 // Xử lý nút "Sửa"
-const editBtns = document.querySelectorAll('.edit-employee-btn');
+const editBtns = document.querySelectorAll('.btn-warning');
 editBtns.forEach(btn => {
     btn.addEventListener('click', function() {
         const row = this.closest('tr');
@@ -246,7 +202,7 @@ editBtns.forEach(btn => {
 });
 
 // Xử lý nút "Xóa"
-const deleteBtns = document.querySelectorAll('.delete-employee-btn');
+const deleteBtns = document.querySelectorAll('.btn-danger');
 deleteBtns.forEach(btn => {
     btn.addEventListener('click', function() {
         const row = this.closest('tr');
@@ -424,6 +380,8 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
     formData.append('phuongankb', document.querySelector('select[name="phuongankb"]').value);
     formData.append('nbd', document.getElementById('nbd').value);
     formData.append('nkt', document.getElementById('nkt').value);
+    formData.append('tlnld', document.getElementById('tlnld').value);
+    formData.append('tldn', document.getElementById('tldn').value);
 
     // Gửi request đến server
     fetch('save_employee.php', {
@@ -446,3 +404,108 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
         alert('Đã xảy ra lỗi khi lưu thông tin');
     });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('[detail-btn]').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const manv = this.getAttribute('data-manv');
+            
+            fetch('get_employee_detail.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'manv=' + manv
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.error) {
+                    alert(data.error);
+                    return;
+                }
+                
+                // Cập nhật thông tin vào modal hiện có
+                updateModalContent(data);
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+});
+
+function updateModalContent(data) {
+    // Cập nhật từng trường thông tin
+    const fields = {
+        'manv': data.MaNV || '',
+        'tennv': data.TenNV || '',
+        'CCCD': data.cccd || '',
+        'ngaysinh': data.NgaySinh || '',
+        'gioitinh': data.GioiTinh || '',
+        'sdt': data.SDT || '',
+        'diachi': data.DiaChi || '',
+        'tenvt': data.tenvt || '',
+        'tenpb': data.tenpb || '',
+        'mabh': data.mabh || '',
+        'phuongankb': data.phuongankb || '',
+        'nbd': data.nbd || '',
+        'nkt': data.nkt || '',
+        'mucdongnld': data.mucdongnld || '',
+        'mucdongdn': data.mucdongdn || ''
+    };
+
+    // Cập nhật từng trường trong modal
+    Object.keys(fields).forEach(key => {
+        const element = document.getElementById('detail_' + key);
+        if (element) {
+            element.textContent = fields[key];
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('[detail-btn-2]').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const cccd = this.getAttribute('data-cccd');
+            
+            fetch('get_employee_detail_2.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'cccd=' + cccd
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.error) {
+                    alert(data.error);
+                    return;
+                }
+                
+                // Cập nhật thông tin vào modal
+                updateProcessDetail(data);
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+});
+
+// Tạo hàm mới để cập nhật modal tiến độ
+function updateProcessDetail(data) {
+    // Cập nhật từng trường thông tin
+    const fields = {
+        'kq_tennv': data.TenNV || '',
+        'kq_cccd': data.CCCD || '',
+        'kq_phuongankb': data.phuongankb || '',
+        'kq_ngaygui': data.ngaygui || '',
+        'kq_trangthai': data.trangthai || '',
+        'kq_mabh': data.mabh || ''
+    };
+
+    // Cập nhật từng trường trong modal
+    Object.keys(fields).forEach(key => {
+        const element = document.getElementById(key);
+        if (element) {
+            element.textContent = fields[key];
+        }
+    });
+}
