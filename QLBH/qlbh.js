@@ -72,81 +72,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Form submissions
-    const queryForm = document.getElementById('queryForm');
-    const queryResult = document.getElementById('queryResult');
-
-    // Query Form
-    queryForm?.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const insuranceId = document.getElementById('insuranceId').value;
-        
-        if (!kiemTraMaBHXH(insuranceId)) {
-            alert('Mã số BHXH không hợp lệ. Vui lòng nhập 10 chữ số.');
-            return;
-        }
- 
-        // Giả lập gọi API
-        setTimeout(() => {
-            // In qlbh.js, find the setTimeout function in the queryForm event listener
-            // Replace the queryResult.innerHTML = `...` part with:
-            queryResult.innerHTML = `
-            <h5>Thông tin BHXH</h5>
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>Mã số BHXH:</strong> ${insuranceId}</p>
-                    <p><strong>Họ và tên:</strong> Nguyễn Văn A</p>
-                    <p><strong>CCCD/CMND:</strong> 001200123456</p>
-                    <p><strong>Ngày sinh:</strong> 01/01/1990</p>
-                    <p><strong>Giới tính:</strong> Nam</p>
-                    <p><strong>Điện thoại:</strong> 0901234567</p>
-                </div>
-                <div class="col-md-6">
-                    <p><strong>Ngày tham gia:</strong> 01/01/2023</p>
-                    <p><strong>Tình trạng:</strong> <span class="badge bg-success">Đang tham gia</span></p>
-                    <p><strong>Thời gian đóng BHXH:</strong> 1 năm 3 tháng</p>
-                    <p><strong>Mức lương đóng BHXH:</strong> ${formatCurrency(10000000)}</p>
-                    <p><strong>Đơn vị tham gia:</strong> Công ty TNHH ABC</p>
-                    <p><strong>Nơi KCB ban đầu:</strong> Bệnh viện XYZ</p>
-                </div>
-            </div>
-            <div class="mt-3">
-                <h6>Lịch sử đóng BHXH</h6>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-sm">
-                        <thead>
-                            <tr>
-                                <th>Thời gian</th>
-                                <th>Đơn vị</th>
-                                <th>Mức đóng</th>
-                                <th>Ghi chú</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>01/2023 - 12/2023</td>
-                                <td>Công ty TNHH ABC</td>
-                                <td>${formatCurrency(8000000)}</td>
-                                <td>Đóng đủ</td>
-                            </tr>
-                            <tr>
-                                <td>01/2024 - Hiện tại</td>
-                                <td>Công ty TNHH ABC</td>
-                                <td>${formatCurrency(10000000)}</td>
-                                <td>Đóng đủ</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            `;
-            queryResult.classList.add('show');
-        }, 500);
-    });
-
-    function kiemTraMaBHXH(id) {
-        return /^\d{10}$/.test(id);
-    }
 });
 // Add to qlbh.js (after the existing code)
 document.addEventListener('DOMContentLoaded', function() {
@@ -190,28 +115,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // thêm grok 
-// Xử lý nút "Sửa"
-const editBtns = document.querySelectorAll('.btn-warning');
-editBtns.forEach(btn => {
-    btn.addEventListener('click', function() {
-        const row = this.closest('tr');
-        // Giả lập mở form chỉnh sửa
-        alert(`Mở form chỉnh sửa cho nhân viên: ${row.cells[0].textContent}`);
-        // Thay alert bằng logic hiển thị modal nếu cần
-    });
-});
-
-// Xử lý nút "Xóa"
-const deleteBtns = document.querySelectorAll('.btn-danger');
-deleteBtns.forEach(btn => {
-    btn.addEventListener('click', function() {
-        const row = this.closest('tr');
-        if (confirm(`Bạn có chắc chắn muốn xóa nhân viên ${row.cells[0].textContent}?`)) {
-            row.remove();
-            // Thay row.remove() bằng logic gửi API xóa nếu cần
-        }
-    });
-});
 // thêm nhân viên
 // Đảm bảo mã chạy sau khi DOM đã tải
 document.addEventListener('DOMContentLoaded', function() {
@@ -253,43 +156,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 kbbhField.disabled = true;  // Không cho phép nhập khi chọn "Chưa"
                 kbbhField.required = false; // Không bắt buộc nhập khi chọn "Chưa"
                 kbbhField.value = '';      // Xóa giá trị khi disable
-            }
-        });
-    }
-});
-// Xử lý modal thêm mới lao động
-document.addEventListener('DOMContentLoaded', function() {
-    const addEmployeeModal = document.getElementById('addEmployeeModal');
-    const addEmployeeForm = document.getElementById('addEmployeeForm');
-    const saveNewEmployee = document.getElementById('saveNewEmployee');
-
-    // Xử lý hiển thị/ẩn trường mã BHXH
-    const maBHXHField = document.getElementById('maBHXHField');
-    // Xử lý nút lưu thông tin
-    if (saveNewEmployee) {
-        saveNewEmployee.addEventListener('click', function() {
-            // Kiểm tra form hợp lệ
-            if (!addEmployeeForm.checkValidity()) {
-                addEmployeeForm.reportValidity();
-                return;
-            }
-
-            // Giả lập lưu thông tin
-            alert('Đã lưu thông tin nhân viên mới thành công!');
-            
-            // Đóng modal và reset form
-            const modal = bootstrap.Modal.getInstance(addEmployeeModal);
-            modal.hide();
-            addEmployeeForm.reset();
-        });
-    }
-
-    // Reset form khi đóng modal
-    if (addEmployeeModal) {
-        addEmployeeModal.addEventListener('hidden.bs.modal', function() {
-            addEmployeeForm.reset();
-            if (maBHXHField) {
-                maBHXHField.style.display = 'none';
             }
         });
     }
@@ -360,7 +226,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Xử lý submit form đăng ký BHXH
 document.getElementById('registerForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
@@ -377,7 +242,7 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
     formData.append('phongban', document.getElementById('phongban').value);
     formData.append('daCoMaBHXH', document.getElementById('daCoMaBHXH').value);
     formData.append('mabh', document.getElementById('mabh').value);
-    formData.append('phuongankb', document.querySelector('select[name="phuongankb"]').value);
+    formData.append('trangthai', document.getElementById('trangthai').value); // Thêm trường trạng thái
     formData.append('nbd', document.getElementById('nbd').value);
     formData.append('nkt', document.getElementById('nkt').value);
     formData.append('tlnld', document.getElementById('tlnld').value);
@@ -392,7 +257,6 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
     .then(data => {
         if (data.success) {
             alert(data.message);
-            // Reset form sau khi lưu thành công
             window.location.reload();
             document.getElementById('registerForm').reset();
         } else {
@@ -509,3 +373,333 @@ function updateProcessDetail(data) {
         }
     });
 }
+document.getElementById('manv').addEventListener('blur', function() {
+    const manv = this.value;
+    if (manv) {
+        // Kiểm tra mã nhân viên trong bảng ttbh
+        fetch('check_ttbh.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'manv=' + encodeURIComponent(manv)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.exists) {
+                alert('Mã nhân viên đã tồn tại trong bảng ttbh');
+                this.value = ''; // Xóa mã nhân viên nếu đã tồn tại
+            } else {
+                // Lấy thông tin từ nhanvien, phongban, vitri
+                fetch('get_employee.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'manv=' + encodeURIComponent(manv)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        document.getElementById('tennv').value = data.TenNV || '';
+                        document.getElementById('cccd').value = data.CCCD || '';
+                        document.getElementById('ngaysinh').value = data.NgaySinh || '';
+                        document.getElementById('gioitinh').value = data.GioiTinh || '';
+                        document.getElementById('sdt').value = data.SDT || '';
+                        document.getElementById('diachi').value = data.DiaChi || '';
+                        document.getElementById('chucvu').value = data.TenVT || '';
+                        document.getElementById('phongban').value = data.TenPB || '';
+                        // Không điền thông tin BHXH
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi:', error);
+                    alert('Có lỗi xảy ra khi lấy thông tin nhân viên');
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Lỗi:', error);
+            alert('Có lỗi xảy ra khi kiểm tra mã nhân viên');
+        });
+    }
+});
+
+document.querySelectorAll('.btn-warning').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const manv = this.getAttribute('data-manv');
+        fetch('get_employee_detail.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'manv=' + encodeURIComponent(manv)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+            // Điền thông tin vào form chỉnh sửa
+            document.getElementById('edit_manv').value = data.MaNV || '';
+            document.getElementById('edit_tennv').value = data.TenNV || '';
+            document.getElementById('edit_cccd').value = data.CCCD || '';
+            document.getElementById('edit_ngaysinh').value = data.NgaySinh || '';
+            document.getElementById('edit_gioitinh').value = data.GioiTinh || '';
+            document.getElementById('edit_sdt').value = data.SDT || '';
+            document.getElementById('edit_diachi').value = data.DiaChi || '';
+            document.getElementById('edit_chucvu').value = data.tenvt || '';
+            document.getElementById('edit_phongban').value = data.tenpb || '';
+            document.getElementById('edit_daCoMaBHXH').value = data.mabh ? 'Có' : 'Chưa';
+            document.getElementById('edit_mabh').value = data.mabh || '';
+            document.getElementById('edit_trangthai').value = data.trangthai || ''; // Điền trạng thái
+            document.getElementById('edit_nbd').value = data.nbd || '';
+            document.getElementById('edit_nkt').value = data.nkt || '';
+        })
+        .catch(error => {
+            console.error('Lỗi:', error);
+            alert('Có lỗi xảy ra khi lấy thông tin nhân viên');
+        });
+    });
+});
+
+document.getElementById('saveEditEmployee').addEventListener('click', function() {
+    const form = document.getElementById('editEmployeeForm');
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('manv', document.getElementById('edit_manv').value);
+    formData.append('tennv', document.getElementById('edit_tennv').value);
+    formData.append('cccd', document.getElementById('edit_cccd').value);
+    formData.append('ngaysinh', document.getElementById('edit_ngaysinh').value);
+    formData.append('gioitinh', document.getElementById('edit_gioitinh').value);
+    formData.append('sdt', document.getElementById('edit_sdt').value);
+    formData.append('diachi', document.getElementById('edit_diachi').value);
+    formData.append('chucvu', document.getElementById('edit_chucvu').value);
+    formData.append('phongban', document.getElementById('edit_phongban').value);
+    formData.append('daCoMaBHXH', document.getElementById('edit_daCoMaBHXH').value);
+    formData.append('mabh', document.getElementById('edit_mabh').value);
+    formData.append('trangthai', document.getElementById('edit_trangthai').value); // Thêm trường trạng thái
+    formData.append('nbd', document.getElementById('edit_nbd').value);
+    formData.append('nkt', document.getElementById('edit_nkt').value);
+    formData.append('tlnld', document.getElementById('edit_tlnld').value);
+    formData.append('tldn', document.getElementById('edit_tldn').value);
+
+    fetch('update_employee.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Cập nhật thông tin thành công');
+            const modal = bootstrap.Modal.getInstance(document.getElementById('editEmployeeModal'));
+            modal.hide();
+            window.location.reload();
+        } else {
+            alert('Lỗi: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Lỗi:', error);
+        alert('Có lỗi xảy ra khi cập nhật thông tin');
+    });
+});
+
+document.getElementById('add_manv').addEventListener('blur', function() {
+    const manv = this.value;
+    if (manv) {
+        fetch('check_qlbh.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'manv=' + encodeURIComponent(manv)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.exists) {
+                alert('Nhân viên đã có thông tin BHXH, vui lòng sử dụng chức năng sửa.');
+                this.value = ''; // Clear the input
+            } else {
+                fetch('get_employee.php?manv=' + encodeURIComponent(manv))
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error('Server trả về lỗi: ' + text) });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        document.getElementById('add_tennv').value = data.TenNV || '';
+                        document.getElementById('add_cccd').value = data.CCCD || '';
+                        document.getElementById('add_ngaysinh').value = data.NgaySinh || '';
+                        document.getElementById('add_gioitinh').value = data.GioiTinh || '';
+                        document.getElementById('add_sdt').value = data.SDT || '';
+                        document.getElementById('add_diachi').value = data.DiaChi || '';
+                        document.getElementById('add_chucvu').value = data.TenVT || '';
+                        document.getElementById('add_phongban').value = data.TenPB || '';
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi:', error);
+                    alert('Có lỗi xảy ra: ' + error.message);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Lỗi:', error);
+            alert('Có lỗi xảy ra khi kiểm tra mã nhân viên');
+        });
+    }
+});
+// ... (Phần mã hiện có của qlbh.js giữ nguyên)
+
+// Thêm sự kiện cho nút saveNewEmployee
+document.addEventListener('DOMContentLoaded', function() {
+    const saveNewEmployeeBtn = document.getElementById('saveNewEmployee');
+    if (saveNewEmployeeBtn) {
+        saveNewEmployeeBtn.addEventListener('click', function() {
+            const form = document.getElementById('addEmployeeForm');
+            
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const daThamGiaBHXH = document.getElementById('daThamGiaBHXH').value;
+            const mabh = document.getElementById('mabh1').value;
+            if (daThamGiaBHXH === 'Có' && !mabh) {
+                alert('Vui lòng nhập mã số BHXH khi nhân viên đã tham gia BHXH.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('manv', document.getElementById('add_manv').value);
+            formData.append('mabh', mabh || '');
+            formData.append('nbd', document.getElementById('add_nbd').value);
+            formData.append('nkt', document.getElementById('add_nkt').value || '');
+            formData.append('trangthai', document.getElementById('add_trangthai').value);
+            formData.append('tlnld', document.getElementById('tlnld').value);
+            formData.append('tldn', document.getElementById('tldn').value);
+
+            fetch('save_employee.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Thêm mới thành công');
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('addEmployeeModal'));
+                    modal.hide();
+                    form.reset();
+                    window.location.reload();
+                } else {
+                    alert('Lỗi: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi:', error);
+                alert('Có lỗi xảy ra khi lưu thông tin. Vui lòng thử lại.');
+            });
+        });
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Xử lý nút Xóa
+    document.querySelectorAll('.btn-danger').forEach(function(button) {
+        button.addEventListener('click', function() {
+            const manv = this.getAttribute('data-manv');
+            if (confirm('Bạn có chắc chắn muốn xóa thông tin BHXH của nhân viên này?')) {
+                deleteEmployee(manv, this);
+            }
+        });
+    });
+
+    function deleteEmployee(manv, button) {
+        fetch('delete_employee.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'manv=' + encodeURIComponent(manv)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Xóa thành công');
+                // Xóa hàng trong bảng
+                const row = button.closest('tr');
+                row.remove();
+            } else {
+                alert('Lỗi: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Lỗi:', error);
+            alert('Có lỗi xảy ra khi xóa thông tin');
+        });
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const queryForm = document.getElementById('queryForm');
+    const queryResult = document.getElementById('queryResult');
+
+    queryForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const insuranceId = document.getElementById('insuranceId').value;
+
+        if (!kiemTraMaBHXH(insuranceId)) {
+            queryResult.innerHTML = `<div class="alert alert-danger">Mã số BHXH không hợp lệ. Vui lòng nhập 10 chữ số.</div>`;
+            return;
+        }
+
+        fetch('tra_cuu_bhxh.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'insuranceId=' + encodeURIComponent(insuranceId)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                queryResult.innerHTML = `<div class="alert alert-danger">${data.error}</div>`;
+            } else {
+                queryResult.innerHTML = `
+                    <h5>Thông tin BHXH</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Mã số BHXH:</strong> ${data.mabh}</p>
+                            <p><strong>Họ và tên:</strong> ${data.tennv}</p>
+                            <p><strong>CCCD/CMND:</strong> ${data.cccd}</p>
+                            <p><strong>Ngày sinh:</strong> ${data.ngaysinh}</p>
+                            <p><strong>Giới tính:</strong> ${data.gioitinh}</p>
+                            <p><strong>Điện thoại:</strong> ${data.sdt}</p>
+                        </div>
+                `;
+            }
+            queryResult.classList.add('show');
+        })
+        .catch(error => {
+            console.error('Lỗi:', error);
+            queryResult.innerHTML = `<div class="alert alert-danger">Đã xảy ra lỗi khi tra cứu. Vui lòng thử lại sau.</div>`;
+        });
+    });
+
+    function kiemTraMaBHXH(id) {
+        return /^\d{10}$/.test(id);
+    }
+
+});

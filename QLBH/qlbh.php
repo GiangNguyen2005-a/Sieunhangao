@@ -40,7 +40,7 @@ if (!$conn) {
                             <form id="queryForm">
                                 <div class="mb-3">
                                     <label class="form-label">Mã số BHXH</label>
-                                    <input type="text" class="form-control" id="insuranceId" placeholder="Nhập mã số BHXH">
+                                    <input type="text" class="form-control" id="insuranceId" placeholder="Nhập mã số BHXH" required">
                                 </div>
                                 <button type="submit" class="btn btn-primary">Tra cứu</button>
                             </form>
@@ -112,10 +112,9 @@ if (!$conn) {
                                                     echo "<td>" . $row1["tenpb"] . "</td>";
                                                     echo "<td>" . $row1["trangthai"] . "</td>";
                                                     echo "<td>
-                                                            <button class='btn btn-sm btn-info me-1'>Xem</button>
-                                                            <button class='btn btn-sm btn-warning me-1'>Sửa</button>
-                                                            <button class='btn btn-sm btn-danger'>Xóa</button>
-                                                        </td>";
+                                                        <button class='btn btn-sm btn-warning me-1' data-manv='" . $row1["manv"] . "' data-bs-toggle='modal' data-bs-target='#editEmployeeModal'>Sửa</button>
+                                                        <button class='btn btn-sm btn-danger' data-manv='" . $row1["manv"] . "'>Xóa</button>
+                                                    </td>";
                                                     echo "</tr>";
                                                 }
                                             } else {
@@ -149,123 +148,103 @@ if (!$conn) {
                             <!-- Nhập thông tin -->
                             <div class="sub-tab-content active-sub-tab" id="nhapThongTin">
                                 <!-- In qlbh.php, find the div with id="nhapThongTin" and replace the form inside it with: -->
-                                <form id="registerForm">
-                                    <div class="card mb-3">
-                                        <div class="card-header bg-light">
-                                            <h6 class="mb-0">Thông tin cá nhân</h6>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-6 mb-3">
-                                                    <label class="form-label">Mã nhân viên</label>
-                                                    <input type="text" class="form-control" id="manv" placeholder="Nhập mã nhân viên" required>
-                                                </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <label class="form-label">Họ và tên</label>
-                                                    <input type="text" class="form-control" id="tennv" placeholder="Nhập họ và tên" required>
-                                                </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <label class="form-label">CCCD/CMND</label>
-                                                    <input type="text" class="form-control" id="cccd" placeholder="Nhập số CCCD/CMND" required>
-                                                </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <label class="form-label">Ngày sinh</label>
-                                                    <input type="date" class="form-control" id="ngaysinh" required>
-                                                </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <label class="form-label">Giới tính</label>
-                                                    <input type="text" class="form-control" id="gioitinh" placeholder="Nhập địa chỉ">
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <label class="form-label">Số điện thoại</label>
-                                                    <input type="tel" class="form-control" id="sdt" placeholder="Nhập số điện thoại">
-                                                </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <label class="form-label">Địa chỉ</label>
-                                                    <input type="text" class="form-control" id="diachi" placeholder="Nhập địa chỉ">
+                                    <form id="registerForm">
+                                        <div class="card mb-3">
+                                            <div class="card-header bg-light">
+                                                <h6 class="mb-0">Thông tin cá nhân</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label">Mã nhân viên</label>
+                                                        <input type="text" class="form-control" id="manv" placeholder="Nhập mã nhân viên" required>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label">Họ và tên</label>
+                                                        <input type="text" class="form-control" id="tennv" placeholder="Nhập họ và tên" required>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label">CCCD/CMND</label>
+                                                        <input type="text" class="form-control" id="cccd" placeholder="Nhập số CCCD/CMND" required>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label">Ngày sinh</label>
+                                                        <input type="date" class="form-control" id="ngaysinh" required>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label">Giới tính</label>
+                                                        <input type="text" class="form-control" id="gioitinh" placeholder="Nhập giới tính">
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label">Số điện thoại</label>
+                                                        <input type="tel" class="form-control" id="sdt" placeholder="Nhập số điện thoại">
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label">Địa chỉ</label>
+                                                        <input type="text" class="form-control" id="diachi" placeholder="Nhập địa chỉ">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    
-                                    <div class="card mb-3">
-                                        <div class="card-header bg-light">
-                                            <h6 class="mb-0">Thông tin việc làm</h6>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-6 mb-3">
-                                                    <label class="form-label">Chức vụ</label>
-                                                    <input type="text" class="form-control" id="chucvu" placeholder="Nhập chức vụ" required>
-                                                </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <label class="form-label">Phòng ban</label>
-                                                    <input type="text" class="form-control" id="phongban" placeholder="Nhập phòng ban" required>
+                                        <div class="card mb-3">
+                                            <div class="card-header bg-light">
+                                                <h6 class="mb-0">Thông tin BHXH</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label">Đã tham gia BHXH</label>
+                                                        <select class="form-select" id="daCoMaBHXH" required>
+                                                            <option value="">Chọn</option>
+                                                            <option value="Có">Có</option>
+                                                            <option value="Chưa">Chưa</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3" id="kbbhField">
+                                                        <label class="form-label">Mã số BHXH</label>
+                                                        <input type="text" class="form-control" id="mabh" placeholder="Nhập mã số BHXH">
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label">Ngày bắt đầu tham gia</label>
+                                                        <input type="date" class="form-control" id="nbd" required>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label">Ngày kết thúc (nếu có)</label>
+                                                        <input type="date" class="form-control" id="nkt">
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label">Trạng thái</label>
+                                                        <select class="form-select" id="trangthai" required>
+                                                            <option value="">Chọn trạng thái</option>
+                                                            <option value="Đang làm việc">Đang làm việc</option>
+                                                            <option value="Nghỉ phép">Nghỉ phép</option>
+                                                            <option value="Nghỉ hẳn">Nghỉ hẳn</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    
-                                    <div class="card mb-3">
-                                        <div class="card-header bg-light">
-                                            <h6 class="mb-0">Thông tin BHXH</h6>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-6 mb-3">
-                                                    <label class="form-label">Đã tham gia BHXH</label>
-                                                    <select class="form-select" id="daCoMaBHXH" required>
-                                                        <option value="">Chọn</option>
-                                                        <option value="Có">Có</option>
-                                                        <option value="Chưa">Chưa</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-6 mb-3" id = "kbbhField">
-                                                    <label class="form-label">Mã số BHXH</label>
-                                                    <input type="text" class="form-control" id="mabh" placeholder="Nhập mã số BHXH">
-                                                </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <label class="form-label">Phương án khai báo</label>
-                                                    <select class="form-select" name="phuongankb" required>
-                                                        <option value="">Chọn phương án</option>
-                                                        <option value="Tăng mới">Tăng mới</option>
-                                                        <option value="Đổi sổ BHXH">Đổi sổ BHXH</option>
-                                                        <option value="Điều chỉnh thông tin">Điều chỉnh thông tin</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <label class="form-label">Ngày bắt đầu tham gia</label>
-                                                    <input type="date" class="form-control" id="nbd" required>
-                                                </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <label class="form-label">Ngày kết thúc (nếu có)</label>
-                                                    <input type="date" class="form-control" id="nkt">
+
+                                        <div class="card mb-3">
+                                            <div class="card-header bg-light">
+                                                <h6 class="mb-0">Mức đóng bảo hiểm</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label">Tỷ lệ người lao động đóng (%)</label>
+                                                        <input type="number" class="form-control" id="tlnld" value="10.5" readonly>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label">Tỷ lệ doanh nghiệp đóng (%)</label>
+                                                        <input type="number" class="form-control" id="tldn" value="21.5" readonly>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    
-                                    <div class="card mb-3">
-                                        <div class="card-header bg-light">
-                                            <h6 class="mb-0">Mức đóng bảo hiểm</h6>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-6 mb-3">
-                                                    <label class="form-label">Tỷ lệ người lao động đóng (%)</label>
-                                                    <input type="number" class="form-control" id="tlnld" value="10.5" readonly>
-                                                </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <label class="form-label">Tỷ lệ doanh nghiệp đóng (%)</label>
-                                                    <input type="number" class="form-control" id="tldn" value="21.5" readonly>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <button type="submit" class="btn btn-primary">Lưu thông tin</button>
-                                </form>
+
+                                        <button type="submit" class="btn btn-primary">Lưu thông tin</button>
+                                    </form>
                             </div>
                             
                             <!-- Gửi lên cơ quan -->
@@ -475,62 +454,54 @@ if (!$conn) {
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Mã nhân viên</label>
-                                        <input type="text" class="form-control" placeholder="Nhập mã nhân viên" required>
+                                        <input type="text" class="form-control" id="add_manv" placeholder="Nhập mã nhân viên" required>
                                     </div>
+                                    <!-- Thông tin cá nhân -->
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Họ và tên</label>
-                                        <input type="text" class="form-control" placeholder="Nhập họ và tên" required>
+                                        <input type="text" class="form-control" id="add_tennv" placeholder="Nhập họ và tên" required>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">CCCD/CMND</label>
-                                        <input type="text" class="form-control" placeholder="Nhập số CCCD/CMND" required>
+                                        <input type="text" class="form-control" id="add_cccd" placeholder="Nhập số CCCD/CMND" required>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Ngày sinh</label>
-                                        <input type="date" class="form-control" required>
+                                        <input type="date" class="form-control" id="add_ngaysinh" required>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Giới tính</label>
-                                        <select class="form-select" required>
+                                        <select class="form-select" id="add_gioitinh" required>
                                             <option value="">Chọn giới tính</option>
-                                            <option value="nam">Nam</option>
-                                            <option value="nu">Nữ</option>
+                                            <option value="Nam">Nam</option>
+                                            <option value="Nữ">Nữ</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Số điện thoại</label>
-                                        <input type="tel" class="form-control" placeholder="Nhập số điện thoại">
+                                        <input type="tel" class="form-control" id="add_sdt" placeholder="Nhập số điện thoại">
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Địa chỉ</label>
-                                        <input type="text" class="form-control" placeholder="Nhập địa chỉ">
+                                        <input type="text" class="form-control" id="add_diachi" placeholder="Nhập địa chỉ">
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Khối thông tin việc làm -->
-                        <div class="card mb-3">
-                            <div class="card-header bg-light">
-                                <h6 class="mb-0">Thông tin việc làm</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
+
+                                    <!-- Thông tin việc làm -->
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Trạng thái</label>
+                                        <select class="form-select" id="add_trangthai" required placeholder="Chọn trạng thái">
+                                            <option value="Đang làm việc">Đang làm việc</option>
+                                            <option value="Nghỉ phép">Nghỉ phép</option>
+                                            <option value="Nghỉ hẳn">Nghỉ hẳn</option>
+                                        </select>
+                                    </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Chức vụ</label>
-                                        <input type="text" class="form-control" placeholder="Nhập chức vụ" required>
+                                        <input type="text" class="form-control" id="add_chucvu" placeholder="Nhập chức vụ" required>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Phòng ban</label>
-                                        <input type="text" class="form-control" placeholder="Nhập phòng ban" required>
-                                    </div>                                    
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Trạng thái</label>
-                                        <select class="form-select" required>
-                                            <option value="">Đang làm việc</option>
-                                            <option value="tangmoi">Nghỉ phép</option>
-                                            <option value="doibhxh">Nghỉ hẳn</option>
-                                        </select>
+                                        <input type="text" class="form-control" id="add_phongban" placeholder="Nhập phòng ban" required>
                                     </div>
                                 </div>
                             </div>
@@ -557,11 +528,11 @@ if (!$conn) {
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Ngày bắt đầu tham gia</label>
-                                        <input type="date" class="form-control" required>
+                                        <input type="date" class="form-control" id="add_nbd">
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Ngày kết thúc (nếu có)</label>
-                                        <input type="date" class="form-control">
+                                        <input type="date" class="form-control" id="add_nkt">
                                     </div>
                                 </div>
                             </div>
@@ -594,6 +565,141 @@ if (!$conn) {
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
                     <button type="button" class="btn btn-primary" id="saveNewEmployee">Lưu thông tin</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Chỉnh sửa lao động -->
+    <div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editEmployeeModalLabel">Chỉnh sửa thông tin lao động</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <form id="editEmployeeForm">
+                    <div class="card mb-3">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0">Thông tin cá nhân</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Mã nhân viên</label>
+                                    <input type="text" class="form-control" id="edit_manv" readonly>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Họ và tên</label>
+                                    <input type="text" class="form-control" id="edit_tennv" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">CCCD/CMND</label>
+                                    <input type="text" class="form-control" id="edit_cccd" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Ngày sinh</label>
+                                    <input type="date" class="form-control" id="edit_ngaysinh" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Giới tính</label>
+                                    <select class="form-select" id="edit_gioitinh" required>
+                                        <option value="">Chọn giới tính</option>
+                                        <option value="Nam">Nam</option>
+                                        <option value="Nữ">Nữ</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Số điện thoại</label>
+                                    <input type="tel" class="form-control" id="edit_sdt" placeholder="Nhập số điện thoại">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Địa chỉ</label>
+                                    <input type="text" class="form-control" id="edit_diachi" placeholder="Nhập địa chỉ">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-3">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0">Thông tin việc làm</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Chức vụ</label>
+                                    <input type="text" class="form-control" id="edit_chucvu" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Phòng ban</label>
+                                    <input type="text" class="form-control" id="edit_phongban" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-3">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0">Thông tin BHXH</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Đã tham gia BHXH</label>
+                                    <select class="form-select" id="edit_daCoMaBHXH" required>
+                                        <option value="">Chọn</option>
+                                        <option value="Có">Có</option>
+                                        <option value="Chưa">Chưa</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Mã số BHXH</label>
+                                    <input type="text" class="form-control" id="edit_mabh" placeholder="Nhập mã số BHXH">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Ngày bắt đầu tham gia</label>
+                                    <input type="date" class="form-control" id="edit_nbd" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Ngày kết thúc (nếu có)</label>
+                                    <input type="date" class="form-control" id="edit_nkt">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Trạng thái</label>
+                                    <select class="form-select" id="edit_trangthai" required>
+                                        <option value="">Chọn trạng thái</option>
+                                        <option value="Đang làm việc">Đang làm việc</option>
+                                        <option value="Nghỉ phép">Nghỉ phép</option>
+                                        <option value="Nghỉ hẳn">Nghỉ hẳn</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-3">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0">Mức đóng bảo hiểm</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Tỷ lệ người lao động đóng (%)</label>
+                                    <input type="number" class="form-control" id="edit_tlnld" value="10.5" readonly>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Tỷ lệ doanh nghiệp đóng (%)</label>
+                                    <input type="number" class="form-control" id="edit_tldn" value="21.5" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" id="saveEditEmployee">Lưu thay đổi</button>
                 </div>
             </div>
         </div>
