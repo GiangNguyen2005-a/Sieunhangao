@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ thống Quản lý Nhân sự</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="sidebar">
+        <div class="user-info">
+            <i class="fas fa-user-circle"></i>
+            <div class="role">HR Manager</div>
+            <div class="title">Quản trị viên</div>
+        </div>
+        <ul id="sidebar-menu">
+            <li data-page="dashboard" class="active"><i class="fas fa-home"></i> Trang chính</li>
+            <li data-page="ho-so"><i class="fas fa-users"></i> Quản lý Hồ sơ</li>
+            <li data-page="hop-dong"><i class="fas fa-file-contract"></i> Quản lý Hợp đồng</li>
+            <li data-page="thu-tuc"><i class="fas fa-tasks"></i> Quản lý Thủ tục</li>
+            <li data-page="khen-thuong-ky-luat"><i class="fas fa-award"></i> Khen thưởng & Kỷ luật</li>
+            <li data-page="bao-cao"><i class="fas fa-chart-bar"></i> Báo cáo Thống kê</li>
+        </ul>
+    </div>
+    <div id="main-content"></div>
+    <script src="scripts.js"></script>
+</body>
+</html>

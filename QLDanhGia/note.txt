@@ -1,0 +1,7 @@
+tên file
+evaluation_Periods.php --> evaluation_periods.php
+
+evaluation_periods.php
+    Định nghĩa các biến cho PDO
+    thêm try ... catch
+

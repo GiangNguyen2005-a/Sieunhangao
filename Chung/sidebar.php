@@ -40,7 +40,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="../QLThue/thue.php" class="nav-link">
+                    <a href="../QLThue_pl/quanlythue.php" class="nav-link">
                         <i class="fas fa-money-bill"></i>
                         <span>Quản lý thuế</span>
                     </a>
