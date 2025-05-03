@@ -1,0 +1,5 @@
+index.html --> index.php
+    thẻ <body>: relink.php --> sidebar.php
+
+config.php
+    xóa: header('Content-Type: application/json');

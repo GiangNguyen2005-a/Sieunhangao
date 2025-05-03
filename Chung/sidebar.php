@@ -52,7 +52,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="../QLNhanSu/nhansu.php" class="nav-link">
+                    <a href="../QLNhanSu_pl/index.php" class="nav-link">
                         <i class="fas fa-user-tie"></i>
                         <span>Quản lý nhân sự</span>
                     </a>

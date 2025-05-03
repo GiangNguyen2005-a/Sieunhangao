@@ -93,10 +93,6 @@ if (!$conn) {
                                                     inner join vitri vt on vt.mavt = nv.mavt
                                                     inner join phongban pb on pb.mapb = nv.mapb";
                                             $result = mysqli_query($conn, $sql);
-
-                                            $sql2 = "SELECT nv.manv, nv.tennv
-                                                    FROM nhanvien nv";
-                                            $result2 = mysqli_query($conn, $sql2);
                                             
                                             if (mysqli_num_rows($result) > 0) {
                                                 // Hiển thị dữ liệu mỗi hàng
