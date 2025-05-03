@@ -162,37 +162,42 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.getElementById('manv').addEventListener('blur', function() {
-    var maNhanVien = this.value; // Lấy giá trị mã nhân viên
-    if (maNhanVien) { // Kiểm tra nếu mã nhân viên không rỗng
-        fetch('get_employee.php?manv=' + encodeURIComponent(maNhanVien))
-            .then(response => {
-                if (!response.ok) {
-                    // Nếu trạng thái không phải 200 OK (ví dụ: 404), ném lỗi với nội dung phản hồi
-                    return response.text().then(text => { throw new Error('Server trả về lỗi: ' + text) });
-                }
-                return response.json(); // Nếu OK, parse JSON
-            })
-            .then(data => {
-                if (data.error) { // Nếu có lỗi từ server
-                    alert(data.error);
-                } else { // Nếu tìm thấy thông tin nhân viên
-                    document.getElementById('tennv').value = data.TenNV;
-                    document.getElementById('cccd').value = data.CCCD;
-                    document.getElementById('ngaysinh').value = data.NgaySinh;
-                    document.getElementById('gioitinh').value = data.GioiTinh;
-                    document.getElementById('sdt').value = data.SDT;
-                    document.getElementById('diachi').value = data.DiaChi;
-                    document.getElementById('chucvu').value = data.TenVT;
-                    document.getElementById('phongban').value = data.TenPB;                    
-                    document.getElementById('mabh').value = data.mabh;
-                    document.getElementById('nbd').value = data.nbd;
-                    document.getElementById('nkt').value = data.nkt;
-                }
-            })
-            .catch(error => {
-                console.error('Lỗi:', error); // Xử lý lỗi nếu fetch thất bại
-                alert('Có lỗi xảy ra: ' + error.message);
-            });
+    var maNhanVien = this.value;
+    if (maNhanVien) {
+        fetch('get_employee.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'manv=' + encodeURIComponent(maNhanVien)
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => { throw new Error('Server trả về lỗi: ' + text) });
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+            } else {
+                document.getElementById('tennv').value = data.TenNV;
+                document.getElementById('cccd').value = data.CCCD;
+                document.getElementById('ngaysinh').value = data.NgaySinh;
+                document.getElementById('gioitinh').value = data.GioiTinh;
+                document.getElementById('sdt').value = data.SDT;
+                document.getElementById('diachi').value = data.DiaChi;
+                document.getElementById('chucvu').value = data.TenVT;
+                document.getElementById('phongban').value = data.TenPB;
+                document.getElementById('mabh').value = data.mabh;
+                document.getElementById('nbd').value = data.nbd;
+                document.getElementById('nkt').value = data.nkt;
+            }
+        })
+        .catch(error => {
+            console.error('Lỗi:', error);
+            alert('Có lỗi xảy ra: ' + error.message);
+        });
     }
 });
 
@@ -216,7 +221,8 @@ document.addEventListener('DOMContentLoaded', function() {
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onload = function() {
             if (xhr.status === 200) {
-                location.reload(); // Tải lại trang khi cập nhật thành công
+                alert('Cập nhật thông tin thành công');
+                // location.reload(); // Tải lại trang khi cập nhật thành công
             } else {
                 alert('Có lỗi xảy ra khi cập nhật trạng thái');
             }
@@ -241,15 +247,15 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
     formData.append('chucvu', document.getElementById('chucvu').value);
     formData.append('phongban', document.getElementById('phongban').value);
     formData.append('daCoMaBHXH', document.getElementById('daCoMaBHXH').value);
+    formData.append('phuongankb', document.getElementById('phuongankb').value);
     formData.append('mabh', document.getElementById('mabh').value);
-    formData.append('trangthai', document.getElementById('trangthai').value); // Thêm trường trạng thái
     formData.append('nbd', document.getElementById('nbd').value);
     formData.append('nkt', document.getElementById('nkt').value);
     formData.append('tlnld', document.getElementById('tlnld').value);
     formData.append('tldn', document.getElementById('tldn').value);
 
     // Gửi request đến server
-    fetch('save_employee.php', {
+    fetch('save_employee_2.php', {
         method: 'POST',
         body: formData
     })
@@ -257,8 +263,8 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
     .then(data => {
         if (data.success) {
             alert(data.message);
-            window.location.reload();
-            document.getElementById('registerForm').reset();
+            // window.location.reload();
+            // document.getElementById('registerForm').reset();
         } else {
             alert('Lỗi: ' + data.message);
         }
@@ -301,7 +307,7 @@ function updateModalContent(data) {
     const fields = {
         'manv': data.MaNV || '',
         'tennv': data.TenNV || '',
-        'CCCD': data.cccd || '',
+        'cccd': data.cccd || '',
         'ngaysinh': data.NgaySinh || '',
         'gioitinh': data.GioiTinh || '',
         'sdt': data.SDT || '',
@@ -329,14 +335,14 @@ function updateModalContent(data) {
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('[detail-btn-2]').forEach(btn => {
         btn.addEventListener('click', function() {
-            const cccd = this.getAttribute('data-cccd');
+            const makb = this.getAttribute('data-makb');
             
             fetch('get_employee_detail_2.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: 'cccd=' + cccd
+                body: 'makb=' + makb
             })
             .then(response => response.json())
             .then(data => {
@@ -357,8 +363,8 @@ document.addEventListener('DOMContentLoaded', function() {
 function updateProcessDetail(data) {
     // Cập nhật từng trường thông tin
     const fields = {
-        'kq_tennv': data.TenNV || '',
-        'kq_cccd': data.CCCD || '',
+        'kq_tennv': data.tennv || '',
+        'kq_cccd': data.cccd || '',
         'kq_phuongankb': data.phuongankb || '',
         'kq_ngaygui': data.ngaygui || '',
         'kq_trangthai': data.trangthai || '',
@@ -388,7 +394,6 @@ document.getElementById('manv').addEventListener('blur', function() {
         .then(data => {
             if (data.exists) {
                 alert('Mã nhân viên đã tồn tại trong bảng ttbh');
-                this.value = ''; // Xóa mã nhân viên nếu đã tồn tại
             } else {
                 // Lấy thông tin từ nhanvien, phongban, vitri
                 fetch('get_employee.php', {
@@ -526,9 +531,15 @@ document.getElementById('add_manv').addEventListener('blur', function() {
         .then(data => {
             if (data.exists) {
                 alert('Nhân viên đã có thông tin BHXH, vui lòng sử dụng chức năng sửa.');
-                this.value = ''; // Clear the input
+                this.value = '';
             } else {
-                fetch('get_employee.php?manv=' + encodeURIComponent(manv))
+                fetch('get_employee.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'manv=' + encodeURIComponent(manv)
+                })
                 .then(response => {
                     if (!response.ok) {
                         return response.text().then(text => { throw new Error('Server trả về lỗi: ' + text) });
@@ -561,7 +572,6 @@ document.getElementById('add_manv').addEventListener('blur', function() {
         });
     }
 });
-// ... (Phần mã hiện có của qlbh.js giữ nguyên)
 
 // Thêm sự kiện cho nút saveNewEmployee
 document.addEventListener('DOMContentLoaded', function() {

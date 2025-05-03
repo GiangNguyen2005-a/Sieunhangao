@@ -1,14 +1,14 @@
 <?php
 include '../Chung/config.php';
 
-if(isset($_POST['cccd'])) {
-    $cccd = $_POST['cccd'];
+if(isset($_POST['makb'])) {
+    $cccd = $_POST['makb'];
     
-    $sql = "SELECT nv.*, kb.*
-            FROM nhanvien nv
-            LEFT JOIN ttbh tt ON nv.manv = tt.manv
-            LEFT JOIN kbbh kb ON tt.mabh = kb.mabh
-            WHERE nv.cccd = ?";
+    $sql = "SELECT nv.tennv, nv.cccd, kb.ngaygui, kb.phuongankb, kb.trangthai, kb.makb, tt.*
+            from kbbh kb
+            left join nhanvien nv on kb.manv = nv.manv
+            left JOIN ttbh tt ON nv.manv = tt.manv
+            WHERE kb.trangthai <> 'Đang xử lý' and kb.makb = ?";
             
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $cccd);

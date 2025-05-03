@@ -4,7 +4,9 @@ include '../Chung/config.php';
 header('Content-Type: application/json');
 
 // Kiểm tra xem tham số 'manv' có tồn tại không
-if (isset($_GET['manv'])) {
+if (isset($_POST['manv'])) {
+    $ma_nhan_vien = $_POST['manv'];
+} elseif (isset($_GET['manv'])) {
     $ma_nhan_vien = $_GET['manv'];
 } else {
     echo json_encode(['error' => 'Thiếu tham số manv']);
