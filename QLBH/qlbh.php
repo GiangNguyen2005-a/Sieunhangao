@@ -209,10 +209,10 @@ if (!$conn) {
                                                         <input type="date" class="form-control" id="nkt">
                                                     </div>
                                                     <div class="col-md-6 mb-3">
-                                                        <label class="form-label">Trạng thái</label>
+                                                        <label class="form-label">Phương án khai báo</label>
                                                         <select class="form-select" id="trangthai" required>
-                                                            <option value="">Chọn trạng thái</option>
-                                                            <option value="Đang làm việc">Đang làm việc</option>
+                                                            <option value="">Chọn phương án</option>
+                                                            <option value="Tăng mới">Tăng mới</option>
                                                             <option value="Nghỉ phép">Nghỉ phép</option>
                                                             <option value="Nghỉ hẳn">Nghỉ hẳn</option>
                                                         </select>
