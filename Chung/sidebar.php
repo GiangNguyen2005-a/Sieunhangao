@@ -16,13 +16,13 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="../QLMucTieu_pl/muc_tieu.php" class="nav-link">
+                    <a href="../QLMucTieu/muc_tieu.php" class="nav-link">
                         <i class="fas fa-bullseye"></i>
                         <span>Quản lý mục tiêu</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="../QLMucTieu_pl/phan_chuyen.php" class="nav-link">
+                    <a href="../QLMucTieu/phan_chuyen.php" class="nav-link">
                         <i class="fas fa-exchange-alt me-2"></i>
                         <span>Quản lý phân chuyền</span>
                     </a>
@@ -46,7 +46,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="../QLThue_pl/quanlythue.php" class="nav-link">
+                    <a href="../QLThue/quanlythue.php" class="nav-link">
                         <i class="fas fa-money-bill"></i>
                         <span>Quản lý thuế</span>
                     </a>
@@ -58,7 +58,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="../QLNhanSu_pl/index.php" class="nav-link">
+                    <a href="../QLNhanSu/index.php" class="nav-link">
                         <i class="fas fa-user-tie"></i>
                         <span>Quản lý nhân sự</span>
                     </a>
