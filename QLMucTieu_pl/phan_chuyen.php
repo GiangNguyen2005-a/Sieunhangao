@@ -8,64 +8,13 @@ require_once 'config.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý phân chuyền</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        /* CSS cho sidebar */
-        .sidebar {
-            background-color: #2196F3;
-            color: white;
-            min-height: 100vh;
-            padding: 20px 0;
-        }
-        .sidebar .nav-link {
-            color: white;
-            padding: 10px 20px;
-        }
-        .sidebar .nav-link:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        .sidebar .nav-link.active {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-        /* CSS cho phần profile */
-        .profile-section {
-            text-align: center;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .profile-image {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            margin-bottom: 10px;
-        }
-        /* CSS cho phần nội dung chính */
-        .main-content {
-            padding: 20px;
-        }
-        /* CSS cho bảng */
-        .table th {
-            background-color: #f8f9fa;
-        }
-        /* CSS cho phần tìm kiếm */
-        .search-section {
-            margin-bottom: 20px;
-        }
-        /* CSS cho phân trang */
-        .pagination {
-            justify-content: center;
-            margin-top: 20px;
-        }
-    </style>
+    <?php include '../Chung/relink.php'; ?>
 </head>
 <body>
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-            <?php include 'sidebar.php'; ?>
+            <?php include '../Chung/sidebar.php'; ?>
 
             <!-- Main Content -->
             <div class="col-md-10 main-content">

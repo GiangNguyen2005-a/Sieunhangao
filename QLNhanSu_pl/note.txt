@@ -3,3 +3,5 @@ index.html --> index.php
 
 config.php
     xóa: header('Content-Type: application/json');
+
+chức năng: hoạt động bình thường

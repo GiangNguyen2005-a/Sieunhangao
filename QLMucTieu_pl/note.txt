@@ -1,0 +1,7 @@
+xem lại quá trình lưu thông tin chỉnh sửa (mô tả, chi tiết, phòng ban)
+    thêm mục tiêu mới: ổn
+    sửa mục tiêu: khi mở giao diện sửa không tự điền phòng ban, mỗi lần sửa mã phòng tự đặt về rỗng, không sửa được mô tả, chi tiết
+them_phan_chuyen.php
+    danh_sach_phan_chuyen.php --> phan_chuyen.php
+giao diện
+    đã đổi về khung của nhóm

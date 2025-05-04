@@ -16,9 +16,15 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="../QLMucTieu/muctieu.php" class="nav-link">
+                    <a href="../QLMucTieu_pl/muc_tieu.php" class="nav-link">
                         <i class="fas fa-bullseye"></i>
                         <span>Quản lý mục tiêu</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="../QLMucTieu_pl/phan_chuyen.php" class="nav-link">
+                        <i class="fas fa-exchange-alt me-2"></i>
+                        <span>Quản lý phân chuyền</span>
                     </a>
                 </li>
                 <li class="nav-item">

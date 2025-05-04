@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 row.dataset.employeeIds = period.employee_ids.join(',');
                 row.innerHTML = `
                     <td>${period.TenKyDG}</td>
-                    <td>${formatDate(period.ThoiGianApDung)}</td>
+                    <td>${period.ThoiGianApDung}</td>
                     <td>${formatDate(period.HanQuanLyDanhGia)}</td>
                     <td>${period.ViTriDG}</td>
                     <td>${period.TrangThai}</td>

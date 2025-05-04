@@ -1,0 +1,1 @@
+sửa lại theo cấu trúc csdl chung (tên bảng, tên cột, ...)

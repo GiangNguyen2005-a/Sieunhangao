@@ -1,9 +1,14 @@
 tên file
 evaluation_Periods.php --> evaluation_periods.php
 
+reports.php
+    phieuquanlydanhgia không có trường MaKyDG
+
 evaluation_periods.php
     Định nghĩa các biến cho PDO
     thêm try ... catch
 
-csdl:
-    lỗi truy xuất db
+config.php
+    đổi lại tên db
+
+hoàn thành nốt 'xem ql đánh giá'

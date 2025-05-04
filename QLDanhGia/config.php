@@ -3,7 +3,7 @@
 $host = 'localhost';         // Địa chỉ máy chủ database
 $username = 'root';         // Tên đăng nhập database
 $password = '';            // Mật khẩu database
-$database = 'quanlydanhgia'; // Tên database
+$database = 'quanlynhansu'; // Tên database
 
 // Tạo kết nối đến database sử dụng mysqli
 $conn = mysqli_connect($host, $username, $password, $database);

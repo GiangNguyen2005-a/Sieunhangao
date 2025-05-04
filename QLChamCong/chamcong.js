@@ -329,13 +329,13 @@ function renderDonNghiPhep(data) {
   data.forEach(item => {
     const row = document.createElement("tr");
     row.innerHTML = `
-      <td>${item.maNV}</td>
-      <td>${item.tenNV}</td>
+      <td>${item.MaNV}</td>
+      <td>${item.TenNV}</td>
       <td>${item.phongBan}</td>
       <td>${item.ngayGui}</td>
       <td>${item.tuNgay}</td>
       <td>${item.denNgay}</td>
-      <td>${item.lyDo}</td>
+      <td>${item.LyDo}</td>
       <td>
         <select class="select-trangthai" data-maDXNP="${item.maDXNP}">
           <option ${item.tinhTrang === "Chờ duyệt" ? "selected" : ""}>Chờ duyệt</option>
@@ -493,14 +493,14 @@ function showBaoCao() {
               <tbody>
                 ${data.map(item => `
                   <tr>
-                    <td>${item.maNV}</td>
-                    <td>${item.tenNV}</td>
+                    <td>${item.MaNV}</td>
+                    <td>${item.TenNV}</td>
                     <td>${item.phongBan}</td>
                     <td>${item.ngayGui}</td>
                     <td>${item.tuNgay}</td>
                     <td>${item.denNgay}</td>
-                    <td>${item.lyDo}</td>
-                    <td>${item.tinhTrang}</td>
+                    <td>${item.LyDo}</td>
+                    <td>${item.TinhTrang}</td>
                   </tr>
                 `).join("")}
               </tbody>

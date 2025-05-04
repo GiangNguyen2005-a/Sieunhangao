@@ -1,3 +1,7 @@
 sidebar
     thẻ <head>: sidebar.php --> relink.php
-    không gửi được đơn nghỉ
+
+file js
+    đổi tên phù hợp với csdl chung
+        maNV --> MaNV
+        ...
