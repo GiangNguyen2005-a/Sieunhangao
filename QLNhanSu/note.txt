@@ -1,7 +1,7 @@
 index.html --> index.php
-    thẻ <body>: relink.php --> sidebar.php
+    đã sửa thẻ <body>: relink.php --> sidebar.php
 
 config.php
-    xóa: header('Content-Type: application/json');
+    đã xóa: header('Content-Type: application/json');
 
 chức năng: hoạt động bình thường

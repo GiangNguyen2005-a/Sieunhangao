@@ -1,7 +1,7 @@
 sidebar
-    thẻ <head>: sidebar.php --> relink.php
+    đã sửa thẻ <head>: sidebar.php --> relink.php
 
 file js
-    đổi tên phù hợp với csdl chung
+    đã đổi tên phù hợp với csdl chung
         maNV --> MaNV
         ...

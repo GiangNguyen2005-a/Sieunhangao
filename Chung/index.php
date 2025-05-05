@@ -21,7 +21,7 @@
             <div class="row mb-4">
                 <div class="col-md-3">
                     <div class="card management-card">
-                        <a href="../QLMucTieu/muctieu.php" class="text-decoration-none text-dark">
+                        <a href="../QLMucTieu/muc_tieu.php" class="text-decoration-none text-dark">
                             <div class="card-body text-center">
                                 <i class="fas fa-bullseye text-primary mb-3"></i>
                                 <h5>Quản lý mục tiêu</h5>
@@ -65,7 +65,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="card management-card">
-                        <a href="../QLThue/thue.php" class="text-decoration-none text-dark">
+                        <a href="../QLThue/quanlythue.php" class="text-decoration-none text-dark">
                             <div class="card-body text-center">
                                 <i class="fas fa-money-bill text-danger mb-3"></i>
                                 <h5>Quản lý thuế</h5>
@@ -85,7 +85,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="card management-card">
-                        <a href="../QLNhanSu/qlbh.php" class="text-decoration-none text-dark">
+                        <a href="../QLNhanSu/index.php" class="text-decoration-none text-dark">
                             <div class="card-body text-center">
                                 <i class="fas fa-user-tie text-info mb-3"></i>
                                 <h5>Quản lý nhân sự</h5>

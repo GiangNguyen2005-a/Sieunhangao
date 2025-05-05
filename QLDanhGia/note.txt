@@ -1,14 +1,13 @@
-tên file
-evaluation_Periods.php --> evaluation_periods.php
+đã sửa tên file evaluation_Periods.php --> evaluation_periods.php (tránh lỗi liên kết)
 
 reports.php
     phieuquanlydanhgia không có trường MaKyDG
 
 evaluation_periods.php
-    Định nghĩa các biến cho PDO
-    thêm try ... catch
+    đã Định nghĩa các biến cho PDO
+    đã thêm try ... catch
 
 config.php
-    đổi lại tên db
+    đã đổi lại tên db
 
 hoàn thành nốt 'xem ql đánh giá'
