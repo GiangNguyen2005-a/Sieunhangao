@@ -7,6 +7,33 @@ include '../Chung/config.php';
 if (!$conn) {
     die("Kết nối thất bại: " . mysqli_connect_error());
 }
+// Đếm số lượng hồ sơ "Đang xử lý"
+$sql_dang_xu_ly = "SELECT COUNT(*) as count FROM kbbh WHERE trangthai = 'Đang xử lý'";
+$result_dang_xu_ly = mysqli_query($conn, $sql_dang_xu_ly);
+$row_dang_xu_ly = mysqli_fetch_assoc($result_dang_xu_ly);
+$dang_xu_ly = $row_dang_xu_ly['count'];
+
+// Đếm số lượng hồ sơ "Đã gửi"
+$sql_da_gui = "SELECT COUNT(*) as count FROM kbbh WHERE trangthai = 'Đã gửi'";
+$result_da_gui = mysqli_query($conn, $sql_da_gui);
+$row_da_gui = mysqli_fetch_assoc($result_da_gui);
+$da_gui = $row_da_gui['count'];
+// Lấy dữ liệu số lượng hồ sơ theo tháng
+$sql_theo_thang = "SELECT MONTH(ngaygui) as thang, COUNT(*) as so_luong 
+                   FROM kbbh 
+                   GROUP BY MONTH(ngaygui)";
+$result_theo_thang = mysqli_query($conn, $sql_theo_thang);
+$data_theo_thang = [];
+while ($row = mysqli_fetch_assoc($result_theo_thang)) {
+    $data_theo_thang[$row['thang']] = $row['so_luong'];
+}
+
+// Chuẩn bị mảng dữ liệu cho 12 tháng
+$months = range(1, 12);
+$so_luong_theo_thang = array_fill(1, 12, 0);
+foreach ($data_theo_thang as $thang => $so_luong) {
+    $so_luong_theo_thang[$thang] = $so_luong;
+}
 ?>
 <html lang="vi">
 <head>
@@ -37,14 +64,61 @@ if (!$conn) {
                 <div class="tab-pane fade show active" id="query">
                     <div class="card">
                         <div class="card-body">
-                            <form id="queryForm">
+                            <h4 class="mb-4">Tra cứu BHXH</h4>
+
+                            <!-- Form tra cứu hiện tại -->
+                            <form id="queryForm" class="mb-4">
                                 <div class="mb-3">
                                     <label class="form-label">Mã số BHXH</label>
-                                    <input type="text" class="form-control" id="insuranceId" placeholder="Nhập mã số BHXH" required">
+                                    <input type="text" class="form-control" id="insuranceId" placeholder="Nhập mã số BHXH" required>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Tra cứu</button>
                             </form>
                             <div id="queryResult" class="mt-4"></div>
+
+                            <!-- Dashboard -->
+                            <h5 class="mt-5">Tổng quan trạng thái hồ sơ (Bảng kbbh)</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <canvas id="pieChart"></canvas>
+                                </div>
+                                <div class="col-md-6">
+                                    <canvas id="barChart"></canvas>
+                                </div>
+                            </div>
+
+                            <!-- Bảng thông tin từ ttbh -->
+                            <div class="table-responsive mt-4">
+                                <h5>Thông tin BHXH (Bảng ttbh)</h5>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Mã nhân viên</th>
+                                            <th>Mã BHXH</th>
+                                            <th>Ngày bắt đầu</th>
+                                            <th>Ngày kết thúc</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $sql_ttbh = "SELECT * FROM ttbh";
+                                        $result_ttbh = mysqli_query($conn, $sql_ttbh);
+                                        if (mysqli_num_rows($result_ttbh) > 0) {
+                                            while ($row = mysqli_fetch_assoc($result_ttbh)) {
+                                                echo "<tr>";
+                                                echo "<td>" . $row['manv'] . "</td>";
+                                                echo "<td>" . $row['mabh'] . "</td>";
+                                                echo "<td>" . $row['nbd'] . "</td>";
+                                                echo "<td>" . $row['nkt'] . "</td>";
+                                                echo "</tr>";
+                                            }
+                                        } else {
+                                            echo "<tr><td colspan='4' class='text-center'>Không có dữ liệu</td></tr>";
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -720,6 +794,49 @@ if (!$conn) {
     </div>
 
     <script src="qlbh.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Dữ liệu cho biểu đồ hình tròn
+        const pieData = {
+            labels: ['Đang xử lý', 'Đã gửi'],
+            datasets: [{
+                data: [<?php echo $dang_xu_ly; ?>, <?php echo $da_gui; ?>],
+                backgroundColor: ['#FF6384', '#36A2EB']
+            }]
+        };
+
+        // Vẽ biểu đồ hình tròn
+        const pieCtx = document.getElementById('pieChart').getContext('2d');
+        new Chart(pieCtx, {
+            type: 'pie',
+            data: pieData
+        });
+
+        // Dữ liệu cho biểu đồ cột
+        const barData = {
+            labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+            datasets: [{
+                label: 'Số lượng hồ sơ',
+                data: [<?php echo implode(',', $so_luong_theo_thang); ?>],
+                backgroundColor: '#36A2EB'
+            }]
+        };
+
+        // Vẽ biểu đồ cột
+        const barCtx = document.getElementById('barChart').getContext('2d');
+        new Chart(barCtx, {
+            type: 'bar',
+            data: barData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+    </script>
 </body>
 </html>
 <?php

@@ -670,10 +670,10 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
         const insuranceId = document.getElementById('insuranceId').value;
 
-        if (!kiemTraMaBHXH(insuranceId)) {
-            queryResult.innerHTML = `<div class="alert alert-danger">Mã số BHXH không hợp lệ. Vui lòng nhập 10 chữ số.</div>`;
-            return;
-        }
+        // if (!kiemTraMaBHXH(insuranceId)) {
+        //     queryResult.innerHTML = `<div class="alert alert-danger">Mã số BHXH không hợp lệ. Vui lòng nhập 10 chữ số.</div>`;
+        //     return;
+        // }
 
         fetch('tra_cuu_bhxh.php', {
             method: 'POST',
@@ -708,8 +708,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    function kiemTraMaBHXH(id) {
-        return /^\d{10}$/.test(id);
-    }
+    // function kiemTraMaBHXH(id) {
+    //     return /^\d{10}$/.test(id);
+    // }
 
 });
