@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const links = document.querySelectorAll(".nav-links a");
   let employees = [];
 
-  // Lấy danh sách nhân viên từ backend
   fetch("get_employees.php")
     .then(response => response.json())
     .then(data => {
@@ -188,7 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("Lỗi khi lấy thông tin thuế:", error);
     document.getElementById("income").value = 0; // Đặt mặc định là 0 nếu không tìm thấy
   }
-);
+)
   }
 
   function selectEmployeeForConfirmation(emp) {

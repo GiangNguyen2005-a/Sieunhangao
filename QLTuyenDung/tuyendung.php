@@ -112,9 +112,40 @@ require_once 'config.php';
             </div>
             <div class="form-row">
                 <button type="submit" class="submit-btn">Tạo tin</button>
-                <button type="button" class="submit-btn" onclick="searchRecruitment()">Tra cứu</button>
+                <button type="button" class="submit-btn" onclick="loadPage('danhsachtintuyendung')">Tra cứu</button>
             </div>
         </form>
+    </template>
+
+    <template id="danhsachpheduyet-template">
+        <div class="header">
+            <h1>Danh sách phê duyệt</h1>
+            <p class="sub">Danh sách ứng viên đã được phê duyệt hoặc từ chối</p>
+        </div>
+        <div class="form-area">
+            <div class="filter-area">
+                <input type="text" id="searchApproval" placeholder="Tìm kiếm ứng viên...">
+                <select id="filterStatus">
+                    <option value="">Tất cả trạng thái</option>
+                    <option value="Đã duyệt">Đã duyệt</option>
+                    <option value="Từ chối">Từ chối</option>
+                </select>
+                <button onclick="renderApprovalList()">Tìm kiếm</button>
+            </div>
+            <table id="approvalTable" class="table">
+                <thead>
+                    <tr>
+                        <th>Tên ứng viên</th>
+                        <th>Vị trí ứng tuyển</th>
+                        <th>Điểm</th>
+                        <th>Nhận xét</th>
+                        <th>Trạng thái</th>
+                        <th>Lý do</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </template>
 
     <template id="interview-template">
@@ -157,7 +188,7 @@ require_once 'config.php';
             </div>
             <div class="form-row">
                 <button type="submit" class="submit-btn">Tạo lịch</button>
-                <button type="button" class="submit-btn" onclick="searchInterview()">Tra cứu</button>
+                <button type="button" class="submit-btn" onclick="loadPage('danhsachlichphongvan')">Tra cứu</button>
             </div>
         </form>
     </template>
@@ -182,7 +213,7 @@ require_once 'config.php';
             </div>
             <div class="form-row">
                 <button type="submit" class="submit-btn">Gửi đánh giá</button>
-                <button type="button" class="submit-btn" onclick="searchEvaluation()">Tra cứu</button>
+                <button type="button" class="submit-btn" onclick="loadPage('danhsachdanhgia')">Tra cứu</button>
             </div>
         </form>
     </template>
@@ -211,9 +242,20 @@ require_once 'config.php';
             </div>
             <div class="form-row">
                 <button type="submit" class="submit-btn">Tạo báo cáo</button>
-                <button type="button" class="submit-btn" onclick="searchReport()">Tra cứu</button>
+                <button type="button" class="submit-btn" onclick="loadPage('danhsachbaocao')">Tra cứu</button>
             </div>
         </form>
+    </template>
+
+    <template id="evaluation-list-template">
+        <div class="header">
+            <h1>Danh sách đánh giá ứng viên</h1>
+            <p class="sub">Tra cứu các đánh giá đã thực hiện</p>
+        </div>
+        <div class="form-area">
+            <input type="text" id="searchInput" placeholder="Tìm kiếm theo tên, vị trí..." />
+            <div id="evaluationList" class="evaluation-list"></div>
+        </div>
     </template>
 
     <template id="approval-template">
@@ -228,6 +270,7 @@ require_once 'config.php';
                     <option value="Từ chối">Từ chối</option>
                 </select>
                 <button onclick="searchApproval()">Tìm kiếm</button>
+                <button type="button" class="submit-btn" onclick="loadPage('danhsachpheduyet')">Xem danh sách đã phê duyệt</button>
             </div>
             <table id="approvalTable" class="table">
                 <thead>
@@ -238,34 +281,10 @@ require_once 'config.php';
                         <th>Nhận xét</th>
                         <th>Trạng thái</th>
                         <th>Lý do</th>
-                        <th>Thao tác</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
             </table>
-            <form action="xu_ly_pheduyet.php" method="POST" class="form-area approval-form">
-                <div class="form-group">
-                    <label for="name">Tên ứng viên:</label>
-                    <input type="text" id="name" name="TenUV" required readonly />
-                </div>
-                <div class="form-group">
-                    <label for="position">Vị trí ứng tuyển:</label>
-                    <input type="text" id="position" name="ViTriUV" required readonly />
-                </div>
-                <div class="form-group">
-                    <label for="trangThai">Trạng thái phê duyệt:</label>
-                    <select id="trangThai" name="TrangThai" required>
-                        <option value="Chờ duyệt">Chờ duyệt</option>
-                        <option value="Đã duyệt">Đã duyệt</option>
-                        <option value="Từ chối">Từ chối</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="lyDo">Lý do (nếu từ chối):</label>
-                    <textarea id="lyDo" name="LyDo" rows="3"></textarea>
-                </div>
-                <button type="submit" class="submit-btn">Cập nhật</button>
-            </form>
         </div>
     </template>
 
@@ -288,9 +307,18 @@ require_once 'config.php';
                 if (template) {
                     mainContent.innerHTML = '';
                     mainContent.appendChild(template.content.cloneNode(true));
-                    if (page === 'approval') {
-                        loadApprovalList();
+                    if (page === "interview") bindInterviewForm();
+                    if (page === "danhsachlichphongvan") loadInterviewList();
+                    if (page === "recruitment") bindRecruitmentForm();
+                    if (page === "danhsachtintuyendung") loadRecruitmentList();
+                    if (page === "evaluation") bindEvaluationForm();
+                    if (page === "danhsachdanhgia") loadEvaluationList();
+                    if (page === "report") bindReportForm();
+                    if (page === "danhsachbaocao") loadReportList();
+                    if (page === "approval") {
+                        bindApprovalForm();
                     }
+                    if (page === "danhsachpheduyet") loadApprovalList();
                 } else {
                     mainContent.innerHTML = `
                         <div class="header">
@@ -331,38 +359,9 @@ require_once 'config.php';
             }
 
             window.searchApproval = function() {
-                loadApprovalList();
-            };
-
-            function loadApprovalList() {
                 const keyword = document.getElementById('searchApproval')?.value || '';
                 const status = document.getElementById('filterStatus')?.value || '';
-                fetch(`lay_danhsachpheduyet.php?keyword=${encodeURIComponent(keyword)}&status=${encodeURIComponent(status)}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        const tbody = document.querySelector('#approvalTable tbody');
-                        tbody.innerHTML = '';
-                        data.forEach(item => {
-                            const row = document.createElement('tr');
-                            row.innerHTML = `
-                                <td>${item.TenUV}</td>
-                                <td>${item.ViTriUV}</td>
-                                <td>${item.Diem || '-'}</td>
-                                <td>${item.NhanXet || '-'}</td>
-                                <td>${item.TrangThai || 'Chờ duyệt'}</td>
-                                <td>${item.LyDo || '-'}</td>
-                                <td><button onclick="fillApprovalForm('${item.TenUV}', '${item.ViTriUV}', '${item.TrangThai || 'Chờ duyệt'}', '${item.LyDo || ''}')">Chỉnh sửa</button></td>
-                            `;
-                            tbody.appendChild(row);
-                        });
-                    });
-            }
-
-            window.fillApprovalForm = function(tenUV, viTriUV, trangThai, lyDo) {
-                document.querySelector('input[name="TenUV"]').value = tenUV;
-                document.querySelector('input[name="ViTriUV"]').value = viTriUV;
-                document.querySelector('select[name="TrangThai"]').value = trangThai;
-                document.querySelector('textarea[name="LyDo"]').value = lyDo;
+                loadApprovalList(keyword, status);
             };
         });
     </script>

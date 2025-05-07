@@ -16,4 +16,5 @@ if (!$conn) {
 
 // Thiết lập bảng mã UTF-8 cho kết nối để hỗ trợ tiếng Việt
 mysqli_set_charset($conn, 'utf8mb4');
+setlocale(LC_ALL, 'vi_VN.UTF-8');
 ?> 

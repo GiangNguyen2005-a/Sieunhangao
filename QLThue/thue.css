@@ -331,3 +331,19 @@ button:hover {
 .nav-links i {
   font-size: 16px;
 }
+/* Căn giữa avatar trong sidebar cho chức năng thuế */
+.sidebar .profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.sidebar .profile img.profile-img {
+  margin: 0 auto;
+  display: block;
+}
+.sidebar .profile h5 {
+  margin-top: 8px;
+  text-align: center;
+}
